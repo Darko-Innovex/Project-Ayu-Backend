@@ -43,11 +43,6 @@ public class Hospital {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "hospital")
     private List<Schedule> schedules;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "Doctor_List",
-            joinColumns = @JoinColumn(name = "hospital_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "doctor_id", referencedColumnName = "id")
-    )
-    private List<Doctor> doctorList;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "hospital")
+    private List<DoctorList> doctorList;
 }
