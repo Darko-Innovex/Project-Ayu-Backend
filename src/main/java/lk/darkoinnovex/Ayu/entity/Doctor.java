@@ -54,4 +54,7 @@ public class Doctor {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "doctor")
     private List<MedicineBill> medicineBillList;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "doctor")
+    private List<DoctorList> doctorList;
 }
