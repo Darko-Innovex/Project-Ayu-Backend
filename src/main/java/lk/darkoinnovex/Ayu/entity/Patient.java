@@ -52,4 +52,7 @@ public class Patient {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "patient")
     private List<LabReport> labReports;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "patient")
+    private List<Allergy> allergyList;
 }
