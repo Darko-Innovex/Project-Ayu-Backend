@@ -1,6 +1,5 @@
 package lk.darkoinnovex.Ayu.dto;
 
-import lk.darkoinnovex.Ayu.entity.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
