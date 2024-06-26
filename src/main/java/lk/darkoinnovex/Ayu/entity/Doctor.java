@@ -46,9 +46,6 @@ public class Doctor {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "doctor")
     private List<Schedule> schedules;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Hospital> hospitalList;
-
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "doctor")
     private List<MedicalReport> medicalReportList;
 
