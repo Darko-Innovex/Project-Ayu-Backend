@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -38,5 +39,16 @@ public class MedicalReportController {
             return ResponseEntity.status(200).body(reports);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+
+    // Save a new medical report
+    @PostMapping("/medical_report")
+    public ResponseEntity<MedicalReportDTO> saveMedicalReport(@PathVariable MedicalReportDTO report) {
+        MedicalReportDTO medicalReport = medicalReportService.createReport(report);
+        if (medicalReport != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(medicalReport);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 }

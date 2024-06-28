@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lk.darkoinnovex.Ayu.entity.MedicineBill;
@@ -15,9 +16,9 @@ import lk.darkoinnovex.Ayu.entity.MedicineList;
 public class MedicineBillController {
 
     //TODO: autowire medical report service layer
-    
+
     // Return medicine bill of a specific appointment
-    @GetMapping("/appointment/{id}/medicine_bill") 
+    @GetMapping("/appointment/{id}/medicine_bill")
     public ResponseEntity<MedicineBill> getMedicalBillOfAppointment(@PathVariable Long id) {
         return ResponseEntity.status(200).body(new MedicineBill());
     }
@@ -26,5 +27,11 @@ public class MedicineBillController {
     @GetMapping("/patient/{id}/drug_list")
     public ResponseEntity<List<MedicineList>> getCurrentDrugListOfPatient(@PathVariable Long id) {
         return ResponseEntity.status(200).body(new ArrayList<MedicineList>());
+    }
+
+    // Save a new medicine bill
+    @PostMapping("/medicine_bill")
+    public ResponseEntity<?> saveMedicineBill(@PathVariable Long bill) {
+        return ResponseEntity.status(201).body(null);
     }
 }
