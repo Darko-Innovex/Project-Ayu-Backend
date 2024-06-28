@@ -1,30 +1,44 @@
 package lk.darkoinnovex.Ayu.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import lk.darkoinnovex.Ayu.dto.MedicineBillDTO;
+import lk.darkoinnovex.Ayu.dto.MedicineListDTO;
+import lk.darkoinnovex.Ayu.service.MedicineBillService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import lk.darkoinnovex.Ayu.entity.MedicineBill;
-import lk.darkoinnovex.Ayu.entity.MedicineList;
-
 @RestController
 public class MedicineBillController {
 
-    //TODO: autowire medical report service layer
+    @Autowired
+    private MedicineBillService medicineBillService;
     
     // Return medicine bill of a specific appointment
     @GetMapping("/appointment/{id}/medicine_bill") 
-    public ResponseEntity<MedicineBill> getMedicalBillOfAppointment(@PathVariable Long id) {
-        return ResponseEntity.status(200).body(new MedicineBill());
+    public ResponseEntity<MedicineBillDTO> getMedicalBillOfAppointment(@PathVariable Long id) {
+        MedicineBillDTO dto = medicineBillService.findMedicineBillByAppointment(id);
+
+        if (dto != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(dto);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     // Return currently using drug list of a specific patient
     @GetMapping("/patient/{id}/drug_list")
-    public ResponseEntity<List<MedicineList>> getCurrentDrugListOfPatient(@PathVariable Long id) {
-        return ResponseEntity.status(200).body(new ArrayList<MedicineList>());
+    public ResponseEntity<List<MedicineListDTO>> getCurrentDrugListOfPatient(@PathVariable Long id) {
+        List<MedicineListDTO> dtos = medicineBillService.getCurrentMedicineListOfPatient(id);
+
+        if (dtos != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(dtos);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 }
