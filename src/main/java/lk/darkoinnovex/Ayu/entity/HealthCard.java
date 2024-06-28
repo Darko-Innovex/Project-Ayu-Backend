@@ -21,5 +21,5 @@ public class HealthCard {
     private Long pinNo;
 
     @Column(nullable = false)
-    private String status;
+    private String status = "Connected";
 }

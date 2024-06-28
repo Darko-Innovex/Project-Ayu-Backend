@@ -1,10 +1,10 @@
 package lk.darkoinnovex.Ayu.service.impl;
 
 import lk.darkoinnovex.Ayu.dto.MedicineBillDTO;
-import lk.darkoinnovex.Ayu.dto.MedicineListDTO;
+import lk.darkoinnovex.Ayu.dto.MedicineDTO;
 import lk.darkoinnovex.Ayu.entity.Doctor;
 import lk.darkoinnovex.Ayu.entity.MedicineBill;
-import lk.darkoinnovex.Ayu.entity.MedicineList;
+import lk.darkoinnovex.Ayu.entity.Medicine;
 import lk.darkoinnovex.Ayu.entity.Patient;
 import lk.darkoinnovex.Ayu.repository.AppointmentRepository;
 import lk.darkoinnovex.Ayu.repository.DoctorRepository;
@@ -112,17 +112,17 @@ public class MedicineBillServiceImpl implements MedicineBillService {
     }
 
     @Override
-    public List<MedicineListDTO> getCurrentMedicineListOfPatient(Long patientId) {
+    public List<MedicineDTO> getCurrentMedicineListOfPatient(Long patientId) {
 
         Patient patient = patientRepository.findById(patientId).orElse(null);
 
         if (patient != null) {
 
-            List<MedicineList> medicineLists = medicineBillRepository.getCurrentDrugListOfPatient(patient).orElse(null);
+            List<Medicine> medicines = medicineBillRepository.getCurrentDrugListOfPatient(patient).orElse(null);
 
-            if (medicineLists != null) {
+            if (medicines != null) {
 
-                return medicineLists.stream().map(medicineList -> new MedicineListDTO(medicineList.getId(), medicineList.getTimestamp(), medicineList.getDayCount(), medicineList.getMedicineName(), medicineList.getMedicineBrand(), medicineList.getMedicineWeight(), medicineList.getDose(), medicineList.getDosesPerDay())).toList();
+                return medicines.stream().map(medicine -> new MedicineDTO(medicine.getId(), medicine.getTimestamp(), medicine.getDayCount(), medicine.getMedicineName(), medicine.getMedicineBrand(), medicine.getMedicineWeight(), medicine.getDose(), medicine.getDosesPerDay())).toList();
             }
         }
 

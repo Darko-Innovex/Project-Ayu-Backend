@@ -40,6 +40,9 @@ public class Patient {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String status = "Connected";
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "health_card_id")
     private HealthCard healthCard;

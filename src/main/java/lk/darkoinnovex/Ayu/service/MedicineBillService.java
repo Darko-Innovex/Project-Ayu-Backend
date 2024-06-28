@@ -1,7 +1,7 @@
 package lk.darkoinnovex.Ayu.service;
 
 import lk.darkoinnovex.Ayu.dto.MedicineBillDTO;
-import lk.darkoinnovex.Ayu.dto.MedicineListDTO;
+import lk.darkoinnovex.Ayu.dto.MedicineDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,5 +18,5 @@ public interface MedicineBillService {
 
     MedicineBillDTO findMedicineBillByAppointment(Long appointmentId);
 
-    List<MedicineListDTO> getCurrentMedicineListOfPatient(Long patientId);
+    List<MedicineDTO> getCurrentMedicineListOfPatient(Long patientId);
 }

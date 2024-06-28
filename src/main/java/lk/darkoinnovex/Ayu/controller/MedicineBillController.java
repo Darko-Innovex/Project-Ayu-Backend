@@ -3,7 +3,7 @@ package lk.darkoinnovex.Ayu.controller;
 import java.util.List;
 
 import lk.darkoinnovex.Ayu.dto.MedicineBillDTO;
-import lk.darkoinnovex.Ayu.dto.MedicineListDTO;
+import lk.darkoinnovex.Ayu.dto.MedicineDTO;
 import lk.darkoinnovex.Ayu.service.MedicineBillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,8 +32,8 @@ public class MedicineBillController {
 
     // Return currently using drug list of a specific patient
     @GetMapping("/patient/{id}/drug_list")
-    public ResponseEntity<List<MedicineListDTO>> getCurrentDrugListOfPatient(@PathVariable Long id) {
-        List<MedicineListDTO> dtos = medicineBillService.getCurrentMedicineListOfPatient(id);
+    public ResponseEntity<List<MedicineDTO>> getCurrentDrugListOfPatient(@PathVariable Long id) {
+        List<MedicineDTO> dtos = medicineBillService.getCurrentMedicineListOfPatient(id);
 
         if (dtos != null) {
             return ResponseEntity.status(HttpStatus.OK).body(dtos);

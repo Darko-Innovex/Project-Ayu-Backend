@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Getter
 @Setter
-public class MedicineListDTO {
+public class MedicineDTO {
 
     private Long id;
 

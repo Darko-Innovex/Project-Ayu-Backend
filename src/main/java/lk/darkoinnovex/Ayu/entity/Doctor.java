@@ -40,6 +40,9 @@ public class Doctor {
     @Column(nullable = false)
     private byte[] photo;
 
+    @Column(nullable = false)
+    private String status = "Connected";
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "doctor")
     private List<Appointment> appointmentList;
 
