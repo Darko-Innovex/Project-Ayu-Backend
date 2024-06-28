@@ -32,10 +32,12 @@ public class AllergyServiceImpl implements AllergyService {
             allergy.setAllergy(allergyDTO.getAllergy());
             allergy.setPatient(patient);
 
-            allergyRepository.save(allergy);
+            Allergy save = allergyRepository.save(allergy);
 
-            allergyDTO.setId(allergy.getId());
-            return allergyDTO;
+            if (save != null) {
+                allergyDTO.setId(save.getId());
+                return allergyDTO;
+            }
         }
 
         return null;

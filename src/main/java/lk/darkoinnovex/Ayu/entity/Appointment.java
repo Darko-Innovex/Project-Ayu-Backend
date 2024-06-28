@@ -25,6 +25,9 @@ public class Appointment {
     @Column(nullable = false)
     private Timestamp timestamp;
 
+    @Column(nullable = false)
+    private String status = "Pending";
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Patient patient;
 
