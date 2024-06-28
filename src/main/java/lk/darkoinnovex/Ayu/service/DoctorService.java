@@ -10,9 +10,11 @@ public interface DoctorService {
 
     List<DoctorDTO> getAllDoctors();
 
-    DoctorDTO createDoctor(DoctorDTO dto);
+    DoctorDTO createDoctor(DoctorDTO dto, Long id);
 
     DoctorDTO updateDoctor(DoctorDTO dto);
 
     DoctorDTO getDoctorById(Long id);
+
+    List<DoctorDTO> getDoctorsOfPatient(Long id);
 }
