@@ -27,5 +27,5 @@ public class MedicineBill {
     private Doctor doctor;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "medicineBill")
-    private List<MedicineList> medicineList;
+    private List<Medicine> medicine;
 }

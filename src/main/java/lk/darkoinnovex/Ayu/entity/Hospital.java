@@ -34,6 +34,9 @@ public class Hospital {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String status = "Connected";
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "hospital")
     private List<Appointment> appointments;
 

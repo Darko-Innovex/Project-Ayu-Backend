@@ -33,5 +33,8 @@ public class Admin {
     private String password;
 
     @Column(nullable = false)
+    private String status = "Connected";
+
+    @Column(nullable = false)
     private byte[] photo;
 }
