@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 public class PatientController {
-    
+
     @Autowired
     private PatientService patientService;
 
@@ -38,11 +38,11 @@ public class PatientController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        
+
     }
 
     // Update patient
-    @PutMapping("/patient/{id}")
+    @PutMapping("/patient")
     public ResponseEntity<PatientDTO> updatePatient(@RequestBody PatientDTO patientDTO) {
         PatientDTO dto = patientService.updatePatient(patientDTO);
 
