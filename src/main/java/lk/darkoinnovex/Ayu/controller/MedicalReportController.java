@@ -39,6 +39,7 @@ public class MedicalReportController {
             return ResponseEntity.status(200).body(reports);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+
     }
 
     // Save a new medical report
@@ -50,5 +51,6 @@ public class MedicalReportController {
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
+
     }
 }
