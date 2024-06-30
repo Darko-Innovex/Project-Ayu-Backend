@@ -28,6 +28,7 @@ public class AllergyController {
         }
     }
 
+    // Save a new allergy
     @PostMapping("/allergies")
     public ResponseEntity<AllergyDTO> saveAllergy(@RequestBody AllergyDTO allergyDTO) {
         AllergyDTO allergy = allergyService.saveAllergy(allergyDTO);
@@ -36,6 +37,18 @@ public class AllergyController {
             return ResponseEntity.status(HttpStatus.CREATED).body(allergy);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    // Delete allergy
+    @DeleteMapping("/allergies/{id}")
+    public ResponseEntity<AllergyDTO> deleteAllergy(@PathVariable Long id) {
+        AllergyDTO dto = allergyService.deleteAllergy(id);
+
+        if (dto != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(dto);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 }
