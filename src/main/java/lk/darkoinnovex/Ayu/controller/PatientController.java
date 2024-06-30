@@ -63,4 +63,12 @@ public class PatientController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
+    //getPatientByHealthCardID
+    @GetMapping("/card/{id}/patient")
+    public ResponseEntity<Object> getPatientByHealthCardID(@PathVariable String id) {
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+
 }

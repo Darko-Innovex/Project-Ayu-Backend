@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MedicineBillController {
 
+    @Autowired
+    private MedicineBillService medicineBillService;
+
     // Return currently using drug list of a specific patient
     @GetMapping("/patient/{id}/drug_list")
     public ResponseEntity<List<MedicineDTO>> getCurrentDrugListOfPatient(@PathVariable Long id) {
