@@ -1,6 +1,7 @@
 package lk.darkoinnovex.Ayu.service.impl;
 
 import lk.darkoinnovex.Ayu.dto.DoctorDTO;
+import lk.darkoinnovex.Ayu.dto.SignInDTO;
 import lk.darkoinnovex.Ayu.entity.Doctor;
 import lk.darkoinnovex.Ayu.entity.DoctorList;
 import lk.darkoinnovex.Ayu.entity.Hospital;
@@ -134,6 +135,18 @@ public class DoctorServiceImpl implements DoctorService {
             if (dotors != null) {
                 return dotors.stream().map(doctor -> new DoctorDTO(doctor.getId(), doctor.getNic(), doctor.getName(), doctor.getSpeciality(), doctor.getEmail(), doctor.getMobile(), doctor.getPassword(), doctor.getPhoto())).toList();
             }
+        }
+
+        return null;
+    }
+
+    @Override
+    public DoctorDTO configDoctorSignIn(SignInDTO dto) {
+        Doctor doctor = doctorRepository.findDoctorBySignInInfo(dto.getUsername(), dto.getPassword()).orElse(null);
+
+        if (doctor != null) {
+            return new DoctorDTO(doctor.getId(), doctor.getNic()
+            , doctor.getName(), doctor.getSpeciality(), doctor.getEmail(), doctor.getMobile(), doctor.getPassword(), doctor.getPhoto());
         }
 
         return null;

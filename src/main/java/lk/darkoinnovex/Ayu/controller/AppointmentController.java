@@ -1,6 +1,5 @@
 package lk.darkoinnovex.Ayu.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import lk.darkoinnovex.Ayu.dto.AppointmentDTO;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import lk.darkoinnovex.Ayu.entity.Appointment;
 
 @RestController
 public class AppointmentController {

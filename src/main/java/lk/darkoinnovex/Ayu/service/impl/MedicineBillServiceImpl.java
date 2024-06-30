@@ -6,14 +6,15 @@ import lk.darkoinnovex.Ayu.entity.Doctor;
 import lk.darkoinnovex.Ayu.entity.MedicineBill;
 import lk.darkoinnovex.Ayu.entity.Medicine;
 import lk.darkoinnovex.Ayu.entity.Patient;
-import lk.darkoinnovex.Ayu.repository.AppointmentRepository;
-import lk.darkoinnovex.Ayu.repository.DoctorRepository;
-import lk.darkoinnovex.Ayu.repository.MedicineBillRepository;
-import lk.darkoinnovex.Ayu.repository.PatientRepository;
+import lk.darkoinnovex.Ayu.repository.*;
 import lk.darkoinnovex.Ayu.service.MedicineBillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -30,6 +31,9 @@ public class MedicineBillServiceImpl implements MedicineBillService {
 
     @Autowired
     private DoctorRepository doctorRepository;
+
+    @Autowired
+    private MedicineRepository medicineRepository;
 
     @Override
     public MedicineBillDTO saveMedicineBill(MedicineBillDTO medicineBillDTO) {
@@ -127,5 +131,40 @@ public class MedicineBillServiceImpl implements MedicineBillService {
         }
 
         return null;
+    }
+
+    @Override
+    public MedicineDTO updateMedicineDayCount(Long id) {
+        Medicine medicine = medicineRepository.findById(id).orElse(null);
+
+        if (medicine != null) {
+
+            int dayCount = calculateDaysBetween(medicine.getTimestamp());
+
+            medicine.setDayCount(dayCount);
+
+            Medicine save = medicineRepository.save(medicine);
+
+            if (save != null) {
+                return new MedicineDTO(medicine.getId(), medicine.getTimestamp(), medicine.getDayCount(), medicine.getMedicineName(), medicine.getMedicineBrand(), medicine.getMedicineWeight(), medicine.getDose(), medicine.getDosesPerDay());
+            }
+        }
+
+        return null;
+    }
+
+    // Calculate day count between two days
+    public int calculateDaysBetween(Timestamp timestamp) {
+        LocalDate startLocalDate = convertToLocalDateViaInstant(timestamp);
+        LocalDate today = LocalDate.now();
+
+        return (int) ChronoUnit.DAYS.between(startLocalDate, today);
+    }
+
+    // Convert Timestamp to LocalDate
+    public LocalDate convertToLocalDateViaInstant(Timestamp timestamp) {
+        return timestamp.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
     }
 }

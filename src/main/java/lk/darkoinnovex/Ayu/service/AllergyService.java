@@ -17,4 +17,6 @@ public interface AllergyService {
     List<AllergyDTO> getAllAllergy();
 
     List<AllergyDTO> getAllergyByPatientId(Long patientId);
+
+    AllergyDTO deleteAllergy(Long id);
 }

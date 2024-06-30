@@ -19,4 +19,6 @@ public interface MedicineBillService {
     MedicineBillDTO findMedicineBillByAppointment(Long appointmentId);
 
     List<MedicineDTO> getCurrentMedicineListOfPatient(Long patientId);
+
+    MedicineDTO updateMedicineDayCount(Long id);
 }

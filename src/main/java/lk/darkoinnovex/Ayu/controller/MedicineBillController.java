@@ -2,19 +2,18 @@ package lk.darkoinnovex.Ayu.controller;
 
 import java.util.List;
 
-import lk.darkoinnovex.Ayu.dto.MedicineBillDTO;
 import lk.darkoinnovex.Ayu.dto.MedicineDTO;
 import lk.darkoinnovex.Ayu.service.MedicineBillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class MedicineBillController {
+
+    @Autowired
+    private MedicineBillService medicineBillService;
 
     // Return currently using drug list of a specific patient
     @GetMapping("/patient/{id}/drug_list")
@@ -32,5 +31,18 @@ public class MedicineBillController {
     @PostMapping("/medicine_bill")
     public ResponseEntity<?> saveMedicineBill(@PathVariable Long bill) {
         return ResponseEntity.status(201).body(null);
+    }
+
+    // Update medicine list day count
+    @PutMapping("/medicine/{id}")
+    public ResponseEntity<MedicineDTO> updateMedicine(@PathVariable Long id) {
+
+        MedicineDTO medicineDTO = medicineBillService.updateMedicineDayCount(id);
+
+        if (medicineDTO != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(medicineDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 }

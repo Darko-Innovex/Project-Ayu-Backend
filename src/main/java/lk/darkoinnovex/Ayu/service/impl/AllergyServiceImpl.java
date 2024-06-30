@@ -7,6 +7,7 @@ import lk.darkoinnovex.Ayu.repository.AllergyRepository;
 import lk.darkoinnovex.Ayu.repository.PatientRepository;
 import lk.darkoinnovex.Ayu.service.AllergyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,9 @@ public class AllergyServiceImpl implements AllergyService {
 
     @Autowired
     private PatientRepository patientRepository;
+    @Qualifier("allergyService")
+    @Autowired
+    private AllergyService allergyService;
 
 
     @Override
@@ -102,5 +106,18 @@ public class AllergyServiceImpl implements AllergyService {
         }
 
         return null;
+    }
+
+    @Override
+    public AllergyDTO deleteAllergy(Long id) {
+        allergyRepository.deleteById(id);
+
+        Allergy allergy = allergyRepository.findById(id).orElse(null);
+
+        if (allergy == null) {
+            return new AllergyDTO();
+        } else {
+            return null;
+        }
     }
 }

@@ -15,4 +15,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
     @Query("SELECT DISTINCT a.doctor FROM Appointment a WHERE a.patient = :patient AND a.status = 'Completed'")
     Optional<List<Doctor>> findCompletedAppointmentDoctorsByPatientId(@Param("patient") Patient patient);
+
+    @Query("SELECT d FROM Doctor d WHERE d.nic=:nic AND d.password=:password")
+    Optional<Doctor> findDoctorBySignInInfo(@Param("nic") String nic, @Param("password") String password);
 }

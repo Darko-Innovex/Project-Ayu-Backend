@@ -1,5 +1,7 @@
 package lk.darkoinnovex.Ayu.service.impl;
 
+import lk.darkoinnovex.Ayu.dto.DoctorDTO;
+import lk.darkoinnovex.Ayu.dto.OldPatientDTO;
 import lk.darkoinnovex.Ayu.dto.PatientDTO;
 import lk.darkoinnovex.Ayu.entity.HealthCard;
 import lk.darkoinnovex.Ayu.entity.Hospital;
@@ -90,6 +92,17 @@ public class PatientServiceImpl implements PatientService {
         if (patient != null) {
             return new PatientDTO(patient.getId(), patient.getBloodType(), patient.getDob(), patient.getEmail(), patient.getMobile(), patient.getName(),  patient.getNic(),   patient.getPassword(), patient.getHealthCard().getPinNo(), patient.getHospital().getId());
         }
+        return null;
+    }
+
+    @Override
+    public List<OldPatientDTO> getAllPatientByDoctorID(Long id) {
+        List<OldPatientDTO> dtos = patientRepository.getOldPatientsOfDoctor(id).orElse(null);
+
+        if (dtos != null) {
+            return dtos;
+        }
+
         return null;
     }
 }

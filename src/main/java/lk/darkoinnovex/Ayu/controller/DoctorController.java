@@ -1,14 +1,15 @@
 package lk.darkoinnovex.Ayu.controller;
 
 import lk.darkoinnovex.Ayu.dto.DoctorDTO;
+import lk.darkoinnovex.Ayu.dto.OldPatientDTO;
+import lk.darkoinnovex.Ayu.dto.SignInDTO;
 import lk.darkoinnovex.Ayu.service.DoctorService;
+import lk.darkoinnovex.Ayu.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,6 +18,9 @@ public class DoctorController {
 
     @Autowired
     private DoctorService doctorService;
+    @Qualifier("patientService")
+    @Autowired
+    private PatientService patientService;
 
     // Return all doctors that patient placed appointments
     @GetMapping("/patient/{id}/doctor")
@@ -31,17 +35,17 @@ public class DoctorController {
         }
     }
 
-    //getAllPatientByDoctorID - {appointment no , patient name , date of appointment}
-    /*public ResponseEntity<List<DoctorDTO>> getAllPatientByDoctorID(@PathVariable Long id) {
+    // Find all patients of a doctor
+    public ResponseEntity<List<OldPatientDTO>> getAllPatientByDoctorID(@PathVariable Long id) {
 
-        List<DoctorDTO> patients = doctorService.getAllPatientByDoctorID(id);
+        List<OldPatientDTO> patients = patientService.getAllPatientByDoctorID(id);
 
         if (patients != null) {
             return ResponseEntity.status(HttpStatus.OK).body(patients);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-    }*/
+    }
 
     //getDoctorById
     @GetMapping("/doctor/{id}")
@@ -69,18 +73,22 @@ public class DoctorController {
         }
     }
 
+    // Confirm username and password of a doctor
+    @GetMapping("/doctor/sign-in")
+    public ResponseEntity<DoctorDTO> doctorSignInConfig(@RequestParam String username, @RequestParam String password) {
+        DoctorDTO doctorDTO = doctorService.configDoctorSignIn(new SignInDTO(username, password));
+
+        if (doctorDTO != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(doctorDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
     //getReviewsByDoctor
     @GetMapping("/doctor/{id}/reviews")
     public ResponseEntity<Object> getReviewsByDoctor(@PathVariable Long id) {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
-
-    //getPatientByHealthCardID
-    @GetMapping("/card/{id}/patient")
-    public ResponseEntity<Object> getPatientByHealthCardID(@PathVariable String id) {
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-    }
-
 }
