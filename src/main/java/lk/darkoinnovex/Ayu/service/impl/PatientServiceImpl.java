@@ -41,9 +41,14 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientDTO createPatient(PatientDTO patientDTO) {
         HealthCard healthCard = healthCardRepository.findByPin(patientDTO.getHealthCardPin()).orElse(null);
-        Hospital hospital = hospitalRepository.findById(patientDTO.getHospitalId()).orElse(null);
 
-        if (healthCard != null || hospital != null) {
+        Hospital hospital = null;
+
+        if (patientDTO.getHospitalId() != null) {
+            hospital = hospitalRepository.findById(patientDTO.getHospitalId()).orElse(null);
+        }
+
+        if (healthCard != null) {
 
             Patient patient = patientDTO.toEntity();
             patient.setHealthCard(healthCard);

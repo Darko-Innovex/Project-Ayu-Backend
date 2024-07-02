@@ -11,6 +11,7 @@ import lk.darkoinnovex.Ayu.service.PatientService;
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 public class PatientController {
 
     @Autowired
