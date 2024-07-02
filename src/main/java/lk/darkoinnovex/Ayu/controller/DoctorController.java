@@ -6,7 +6,6 @@ import lk.darkoinnovex.Ayu.dto.SignInDTO;
 import lk.darkoinnovex.Ayu.service.DoctorService;
 import lk.darkoinnovex.Ayu.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,7 @@ public class DoctorController {
 
     @Autowired
     private DoctorService doctorService;
-    @Qualifier("patientService")
+
     @Autowired
     private PatientService patientService;
 
