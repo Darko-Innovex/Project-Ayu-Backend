@@ -27,6 +27,7 @@ public class PatientDTO {
         patient.setId(id);
         patient.setName(firstName + " " + lastName);
         patient.setDob(dob);
+        patient.setNic(nic);
         patient.setMobile(mobile);
         patient.setEmail(email);
         patient.setBloodType(bloodType);
