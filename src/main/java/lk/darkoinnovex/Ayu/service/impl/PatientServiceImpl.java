@@ -1,5 +1,6 @@
 package lk.darkoinnovex.Ayu.service.impl;
 
+import lk.darkoinnovex.Ayu.dto.HealthCardDTO;
 import lk.darkoinnovex.Ayu.dto.OldPatientDTO;
 import lk.darkoinnovex.Ayu.dto.PatientDTO;
 import lk.darkoinnovex.Ayu.entity.HealthCard;
@@ -40,7 +41,19 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientDTO createPatient(PatientDTO patientDTO) {
-        HealthCard healthCard = healthCardRepository.findByPin(patientDTO.getHealthCardPin()).orElse(null);
+
+        HealthCard healthCard = null;
+
+        if (patientDTO.getHealthCardPin() == null) {
+            List<HealthCard> healthCards = healthCardRepository.getNotReservedHealthCard().orElse(null);
+
+            if (healthCards != null) {
+                healthCard = healthCards.get(0);
+            }
+
+        } else {
+            healthCard = healthCardRepository.findByPin(patientDTO.getHealthCardPin()).orElse(null);
+        }
 
         Hospital hospital = null;
 
@@ -55,7 +68,15 @@ public class PatientServiceImpl implements PatientService {
             patient.setHospital(hospital);
 
             Patient savedPatient = patientRepository.save(patient);
-            return savedPatient.toDto();
+
+            if (savedPatient != null) {
+
+                healthCard.setStatus("Connected");
+
+                HealthCard save = healthCardRepository.save(healthCard);
+
+                return savedPatient.toDto();
+            }
         }
         return null;
     }

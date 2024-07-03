@@ -1,6 +1,6 @@
 package lk.darkoinnovex.Ayu.service;
 
-import lk.darkoinnovex.Ayu.dto.DoctorDTO;
+import lk.darkoinnovex.Ayu.dto.HealthCardDTO;
 import lk.darkoinnovex.Ayu.dto.OldPatientDTO;
 import lk.darkoinnovex.Ayu.dto.PatientDTO;
 import org.springframework.stereotype.Service;
