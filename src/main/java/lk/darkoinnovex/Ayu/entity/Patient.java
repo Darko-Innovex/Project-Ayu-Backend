@@ -64,18 +64,23 @@ public class Patient {
 
         String[] names = name.split(" ");
 
-        return new PatientDTO(
-                id,
-                names[0],
-                names[1],
-                dob,
-                nic,
-                mobile,
-                email,
-                bloodType,
-                password,
-                healthCard.getPinNo(),
-                hospital.getId()
-        );
+        PatientDTO patientDTO = new PatientDTO();
+
+        patientDTO.setId(id);
+        patientDTO.setFirstName(names[0]);
+        patientDTO.setLastName(names[1]);
+        patientDTO.setDob(dob);
+        patientDTO.setNic(nic);
+        patientDTO.setMobile(mobile);
+        patientDTO.setEmail(email);
+        patientDTO.setBloodType(bloodType);
+        patientDTO.setPassword(password);
+        patientDTO.setHealthCardPin(healthCard.getPinNo());
+
+        if (this.hospital != null) {
+            patientDTO.setHospitalId(hospital.getId());
+        }
+
+        return patientDTO;
     }
 }
