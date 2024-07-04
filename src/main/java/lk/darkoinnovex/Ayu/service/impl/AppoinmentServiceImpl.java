@@ -98,9 +98,13 @@ public class AppoinmentServiceImpl implements AppointmentService {
     @Override
     public List<AppointmentDTO> getAppointmentsByPatientId(Long id) {
         Patient patient = patientRepository.findById(id).orElse(null);
+
         if(patient != null) {
+            System.out.println(patient.getId());
             List<Appointment> appointments = appointmentRepository.findByPatientId(patient).orElse(null);
-            List<AppointmentDTO> dtos = appointments.stream().map(appointment -> new AppointmentDTO(appointment.getId(), appointment.getAppointmentNo(), appointment.getTimestamp(), appointment.getDoctor().getId(), appointment.getHospital().getId(), appointment.getMedicalReport().getId(), appointment.getMedicineBill().getId(), appointment.getPatient().getId())).toList();
+            List<AppointmentDTO> dtos = appointments.stream().map(appointment -> new AppointmentDTO(appointment.getId(), appointment.getAppointmentNo(), appointment.getTimestamp(), appointment.getPatient().getId(), appointment.getDoctor().getId(), appointment.getHospital().getId(), appointment.getMedicalReport().getId(), appointment.getMedicineBill().getId())).toList();
+
+            return dtos;
         }
         return null;
     }

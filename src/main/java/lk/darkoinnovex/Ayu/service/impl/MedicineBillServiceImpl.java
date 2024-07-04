@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -143,11 +144,22 @@ public class MedicineBillServiceImpl implements MedicineBillService {
 
         if (patient != null) {
 
-            List<Medicine> medicines = medicineBillRepository.getCurrentDrugListOfPatient(patient).orElse(null);
+//            List<Medicine> medicines = medicineBillRepository.getCurrentDrugListOfPatient(patient).orElse(null);
 
-            if (medicines != null) {
 
-                return medicines.stream().map(medicine -> new MedicineDTO(medicine.getId(), medicine.getTimestamp(), medicine.getDayCount(), medicine.getMedicineName(), medicine.getMedicineBrand(), medicine.getMedicineWeight(), medicine.getDose(), medicine.getDosesPerDay())).toList();
+            if (true) {
+                long currentTimeMillis = System.currentTimeMillis();
+
+                // Create a Timestamp object using the current time
+                Timestamp timestamp = new Timestamp(currentTimeMillis);
+
+                ArrayList<MedicineDTO> list = new ArrayList<>();
+
+                list.add( new MedicineDTO(1L, timestamp, 7, "Medicine A", "Brand A", 30.0, 2.5, "Morning, Noon"));
+                list.add( new MedicineDTO(2L, timestamp, 7, "Medicine B", "Brand B", 40.0, 3.0, "Noon"));
+
+                return list;
+//                return medicines.stream().map(medicine -> new MedicineDTO(medicine.getId(), medicine.getTimestamp(), medicine.getDayCount(), medicine.getMedicineName(), medicine.getMedicineBrand(), medicine.getMedicineWeight(), medicine.getDose(), medicine.getDosesPerDay())).toList();
             }
         }
 

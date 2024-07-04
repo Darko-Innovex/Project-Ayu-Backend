@@ -54,7 +54,7 @@ public class MedicineBillController {
         }
     }
 
-    @GetMapping("/medicine_bill/{id}")
+    @GetMapping("/appointment/{appointmentId}/medicine_list")
     public ResponseEntity<MedicineBillDTO> getMedicineBillOfAppointment(@PathVariable Long appointmentId) {
 
         MedicineBillDTO dto = medicineBillService.findMedicineBillByAppointment(appointmentId);

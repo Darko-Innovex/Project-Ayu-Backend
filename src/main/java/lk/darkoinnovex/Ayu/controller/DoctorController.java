@@ -2,7 +2,6 @@ package lk.darkoinnovex.Ayu.controller;
 
 import lk.darkoinnovex.Ayu.dto.DoctorDTO;
 import lk.darkoinnovex.Ayu.service.DoctorService;
-import lk.darkoinnovex.Ayu.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +15,6 @@ public class DoctorController {
 
     @Autowired
     private DoctorService doctorService;
-
-    @Autowired
-    private PatientService patientService;
 
     // Return all doctors that patient placed appointments
     @GetMapping("/patient/{id}/doctor")
@@ -40,6 +36,7 @@ public class DoctorController {
         DoctorDTO doctor = doctorService.getDoctorById(id);
 
         if (doctor != null) {
+            System.out.println(doctor);
             return ResponseEntity.status(HttpStatus.OK).body(doctor);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
