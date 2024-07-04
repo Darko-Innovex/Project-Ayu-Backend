@@ -22,9 +22,9 @@ public class MedicalReportServiceImpl implements MedicalReportService {
     @Autowired
     private DoctorRepository doctorRepository;
 
-
     @Autowired
     private PatientRepository patientRepository;
+
 
     @Override
     public List<MedicalReportDTO> getAllReports() {

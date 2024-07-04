@@ -21,24 +21,6 @@ public class DoctorServiceImpl implements DoctorService {
     private DoctorRepository doctorRepository;
 
     @Autowired
-    private PatientRepository PatientRepository;
-
-    @Autowired
-    private HospitalRepository HospitalRepository;
-
-    @Autowired
-    private AppointmentRepository appointmentRepository;
-
-    @Autowired
-    private ScheduleRepository scheduleRepository;
-
-    @Autowired
-    private MedicalReportRepository medicalReportRepository;
-
-    @Autowired
-    private MedicineBillRepository medicineBillRepository;
-
-    @Autowired
     private DoctorListRepository doctorListRepository;
 
     @Autowired

@@ -1,6 +1,5 @@
 package lk.darkoinnovex.Ayu.service.impl;
 
-import lk.darkoinnovex.Ayu.dto.HealthCardDTO;
 import lk.darkoinnovex.Ayu.dto.OldPatientDTO;
 import lk.darkoinnovex.Ayu.dto.PatientDTO;
 import lk.darkoinnovex.Ayu.entity.HealthCard;
@@ -12,6 +11,7 @@ import lk.darkoinnovex.Ayu.repository.PatientRepository;
 import lk.darkoinnovex.Ayu.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +40,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
+    @Transactional
     public PatientDTO createPatient(PatientDTO patientDTO) {
 
         HealthCard healthCard = null;

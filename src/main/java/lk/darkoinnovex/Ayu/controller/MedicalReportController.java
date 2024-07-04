@@ -1,14 +1,12 @@
 package lk.darkoinnovex.Ayu.controller;
 
 import lk.darkoinnovex.Ayu.dto.MedicalReportDTO;
-import lk.darkoinnovex.Ayu.entity.MedicalReport;
 import lk.darkoinnovex.Ayu.service.MedicalReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
