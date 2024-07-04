@@ -1,8 +1,8 @@
 package lk.darkoinnovex.Ayu.service;
 
-import lk.darkoinnovex.Ayu.dto.HealthCardDTO;
 import lk.darkoinnovex.Ayu.dto.OldPatientDTO;
 import lk.darkoinnovex.Ayu.dto.PatientDTO;
+import lk.darkoinnovex.Ayu.dto.SignInDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,4 +19,8 @@ public interface PatientService {
     PatientDTO getPatientById(Long id);
 
     List<OldPatientDTO> getAllPatientByDoctorID(Long id);
+
+    PatientDTO getPatientByHealthCard(Long pin);
+
+    PatientDTO configPatientSignIn(SignInDTO dto);
 }

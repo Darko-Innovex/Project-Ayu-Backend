@@ -2,6 +2,7 @@ package lk.darkoinnovex.Ayu.service.impl;
 
 import lk.darkoinnovex.Ayu.dto.OldPatientDTO;
 import lk.darkoinnovex.Ayu.dto.PatientDTO;
+import lk.darkoinnovex.Ayu.dto.SignInDTO;
 import lk.darkoinnovex.Ayu.entity.HealthCard;
 import lk.darkoinnovex.Ayu.entity.Hospital;
 import lk.darkoinnovex.Ayu.entity.Patient;
@@ -11,7 +12,6 @@ import lk.darkoinnovex.Ayu.repository.PatientRepository;
 import lk.darkoinnovex.Ayu.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,6 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    @Transactional
     public PatientDTO createPatient(PatientDTO patientDTO) {
 
         HealthCard healthCard = null;
@@ -126,6 +125,32 @@ public class PatientServiceImpl implements PatientService {
 
         if (dtos != null) {
             return dtos;
+        }
+
+        return null;
+    }
+
+    @Override
+    public PatientDTO getPatientByHealthCard(Long pin) {
+        HealthCard healthCard = healthCardRepository.findByPin(pin).orElse(null);
+
+        if (healthCard != null) {
+            Patient patient = patientRepository.getPatientByHealthCard(healthCard).orElse(null);
+
+            if (patient != null) {
+                return patient.toDto();
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public PatientDTO configPatientSignIn(SignInDTO dto) {
+        Patient patient = patientRepository.findPatientBySignInInfo(dto.getUsername(), dto.getPassword()).orElse(null);
+
+        if (patient != null) {
+            return patient.toDto();
         }
 
         return null;

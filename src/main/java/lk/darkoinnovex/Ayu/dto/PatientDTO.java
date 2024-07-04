@@ -1,6 +1,7 @@
 package lk.darkoinnovex.Ayu.dto;
 
 import lk.darkoinnovex.Ayu.entity.Patient;
+import lk.darkoinnovex.Ayu.util.BaseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PatientDTO {
+public class PatientDTO implements BaseDTO {
     private Long id;
     private String firstName;
     private String lastName;

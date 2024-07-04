@@ -1,5 +1,6 @@
 package lk.darkoinnovex.Ayu.controller;
 
+import lk.darkoinnovex.Ayu.dto.OldPatientDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +55,7 @@ public class PatientController {
         }
     }
 
+    // Get all patients
     @GetMapping("/patient")
     public ResponseEntity<List<PatientDTO>> getAllPatients() {
         List<PatientDTO> dtos = patientService.getAllPatients();
@@ -66,9 +68,28 @@ public class PatientController {
     }
 
     //getPatientByHealthCardID
-    @GetMapping("/card/{id}/patient")
-    public ResponseEntity<Object> getPatientByHealthCardID(@PathVariable String id) {
+    @GetMapping("/card/{pin}/patient")
+    public ResponseEntity<Object> getPatientByHealthCardID(@PathVariable Long pin) {
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        PatientDTO patientDTO = patientService.getPatientByHealthCard(pin);
+
+        if (patientDTO != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(patientDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    // Find all patients of a doctor
+    @GetMapping("/doctor/{id}/patient")
+    public ResponseEntity<List<OldPatientDTO>> getAllPatientByDoctorID(@PathVariable Long id) {
+
+        List<OldPatientDTO> patients = patientService.getAllPatientByDoctorID(id);
+
+        if (patients != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(patients);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 }
