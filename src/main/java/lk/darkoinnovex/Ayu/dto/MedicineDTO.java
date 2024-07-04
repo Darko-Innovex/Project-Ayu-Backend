@@ -1,5 +1,6 @@
 package lk.darkoinnovex.Ayu.dto;
 
+import lk.darkoinnovex.Ayu.entity.Medicine;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,4 +29,19 @@ public class MedicineDTO {
     private double dose;
 
     private String dosesPerDay;
+
+    public Medicine toEntity() {
+        Medicine medicine = new Medicine();
+
+        medicine.setId(id);
+        medicine.setTimestamp(timestamp);
+        medicine.setDayCount(dayCount);
+        medicine.setMedicineName(medicineName);
+        medicine.setMedicineBrand(medicineBrand);
+        medicine.setMedicineWeight(medicineWeight);
+        medicine.setDose(dose);
+        medicine.setDosesPerDay(dosesPerDay);
+
+        return medicine;
+    }
 }

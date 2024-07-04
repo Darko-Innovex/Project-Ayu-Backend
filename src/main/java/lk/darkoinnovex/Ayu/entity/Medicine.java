@@ -1,6 +1,7 @@
 package lk.darkoinnovex.Ayu.entity;
 
 import jakarta.persistence.*;
+import lk.darkoinnovex.Ayu.dto.MedicineDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,4 +42,17 @@ public class Medicine {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private MedicineBill medicineBill;
+
+    public MedicineDTO toDto() {
+        return new MedicineDTO(
+                id,
+                timestamp,
+                dayCount,
+                medicineName,
+                medicineBrand,
+                medicineWeight,
+                dose,
+                dosesPerDay
+        );
+    }
 }
