@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,4 +16,5 @@ public class MedicineBillDTO {
     private Long id;
     private Long doctorId;
     private Timestamp timestamp;
+    private List<MedicineDTO> medicineList;
 }

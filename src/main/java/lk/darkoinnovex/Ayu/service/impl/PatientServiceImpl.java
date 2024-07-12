@@ -1,8 +1,8 @@
 package lk.darkoinnovex.Ayu.service.impl;
 
-import lk.darkoinnovex.Ayu.dto.DoctorDTO;
 import lk.darkoinnovex.Ayu.dto.OldPatientDTO;
 import lk.darkoinnovex.Ayu.dto.PatientDTO;
+import lk.darkoinnovex.Ayu.dto.SignInDTO;
 import lk.darkoinnovex.Ayu.entity.HealthCard;
 import lk.darkoinnovex.Ayu.entity.Hospital;
 import lk.darkoinnovex.Ayu.entity.Patient;
@@ -13,6 +13,7 @@ import lk.darkoinnovex.Ayu.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,30 +31,52 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public List<PatientDTO> getAllPatients() {
         List<Patient> patients = patientRepository.findAll();
-        List<PatientDTO> patientDTOS = patients.stream().map(patient -> new PatientDTO(patient.getId(), patient.getName(), patient.getDob(), patient.getNic(), patient.getMobile(), patient.getEmail(), patient.getBloodType(), patient.getPassword(), patient.getHealthCard().getPinNo(), patient.getHospital().getId())).toList();
+        List<PatientDTO> patientDTOS = new ArrayList<>();
+
+        patients.forEach(patient -> {
+            patientDTOS.add(patient.toDto());
+        });
         return patientDTOS;
     }
 
     @Override
     public PatientDTO createPatient(PatientDTO patientDTO) {
-        HealthCard healthCard = healthCardRepository.findByPin(patientDTO.getHealthCardPin()).orElse(null);
-        Hospital hospital = hospitalRepository.findById(patientDTO.getHospitalId()).orElse(null);
 
-        if (healthCard != null || hospital != null) {
+        HealthCard healthCard = null;
 
-            Patient patient = new Patient();
-            patient.setBloodType(patientDTO.getBloodType());
-            patient.setDob(patientDTO.getDob());
-            patient.setEmail(patientDTO.getEmail());
-            patient.setMobile(patientDTO.getMobile());
-            patient.setName(patientDTO.getName());
-            patient.setNic(patientDTO.getNic());
-            patient.setPassword(patientDTO.getPassword());
+        if (patientDTO.getHealthCardPin() == null) {
+            List<HealthCard> healthCards = healthCardRepository.getNotReservedHealthCard().orElse(null);
+
+            if (healthCards != null) {
+                healthCard = healthCards.get(0);
+            }
+
+        } else {
+            healthCard = healthCardRepository.findByPin(patientDTO.getHealthCardPin()).orElse(null);
+        }
+
+        Hospital hospital = null;
+
+        if (patientDTO.getHospitalId() != null) {
+            hospital = hospitalRepository.findById(patientDTO.getHospitalId()).orElse(null);
+        }
+
+        if (healthCard != null) {
+
+            Patient patient = patientDTO.toEntity();
             patient.setHealthCard(healthCard);
             patient.setHospital(hospital);
 
             Patient savedPatient = patientRepository.save(patient);
-            return new PatientDTO(savedPatient.getId(), savedPatient.getBloodType(), savedPatient.getDob(), savedPatient.getEmail(), savedPatient.getMobile(), savedPatient.getName(), savedPatient.getNic(), savedPatient.getPassword(), savedPatient.getHealthCard().getPinNo(), savedPatient.getHospital().getId());
+
+            if (savedPatient != null) {
+
+                healthCard.setStatus("Connected");
+
+                HealthCard save = healthCardRepository.save(healthCard);
+
+                return savedPatient.toDto();
+            }
         }
         return null;
     }
@@ -72,14 +95,15 @@ public class PatientServiceImpl implements PatientService {
                 patient.setDob(patientDTO.getDob());
                 patient.setEmail(patientDTO.getEmail());
                 patient.setMobile(patientDTO.getMobile());
-                patient.setName(patientDTO.getName());
+                patient.setName(patientDTO.getFirstName() + " " + patientDTO.getLastName());
                 patient.setNic(patientDTO.getNic());
                 patient.setPassword(patientDTO.getPassword());
                 patient.setHealthCard(healthCard);
                 patient.setHospital(hospital);
 
                 Patient updatedPatient = patientRepository.save(patient);
-                return new PatientDTO(updatedPatient.getId(), updatedPatient.getBloodType(), updatedPatient.getDob(), updatedPatient.getEmail(), updatedPatient.getMobile(), updatedPatient.getName(), updatedPatient.getNic(), updatedPatient.getPassword(), updatedPatient.getHealthCard().getPinNo(), updatedPatient.getHospital().getId());
+
+                return updatedPatient.toDto();
             }
         }
 
@@ -90,7 +114,7 @@ public class PatientServiceImpl implements PatientService {
     public PatientDTO getPatientById(Long id) {
         Patient patient = patientRepository.findById(id).orElse(null);
         if (patient != null) {
-            return new PatientDTO(patient.getId(), patient.getBloodType(), patient.getDob(), patient.getEmail(), patient.getMobile(), patient.getName(),  patient.getNic(),   patient.getPassword(), patient.getHealthCard().getPinNo(), patient.getHospital().getId());
+            return patient.toDto();
         }
         return null;
     }
@@ -101,6 +125,32 @@ public class PatientServiceImpl implements PatientService {
 
         if (dtos != null) {
             return dtos;
+        }
+
+        return null;
+    }
+
+    @Override
+    public PatientDTO getPatientByHealthCard(Long pin) {
+        HealthCard healthCard = healthCardRepository.findByPin(pin).orElse(null);
+
+        if (healthCard != null) {
+            Patient patient = patientRepository.getPatientByHealthCard(healthCard).orElse(null);
+
+            if (patient != null) {
+                return patient.toDto();
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public PatientDTO configPatientSignIn(SignInDTO dto) {
+        Patient patient = patientRepository.findPatientBySignInInfo(dto.getUsername(), dto.getPassword()).orElse(null);
+
+        if (patient != null) {
+            return patient.toDto();
         }
 
         return null;

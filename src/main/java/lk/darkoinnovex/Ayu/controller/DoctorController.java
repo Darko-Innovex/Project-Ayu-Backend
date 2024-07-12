@@ -3,12 +3,8 @@ package lk.darkoinnovex.Ayu.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lk.darkoinnovex.Ayu.dto.DoctorDTO;
-import lk.darkoinnovex.Ayu.dto.OldPatientDTO;
-import lk.darkoinnovex.Ayu.dto.SignInDTO;
 import lk.darkoinnovex.Ayu.service.DoctorService;
-import lk.darkoinnovex.Ayu.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +19,6 @@ public class DoctorController {
 
     @Autowired
     private DoctorService doctorService;
-    @Qualifier("patientService")
-    @Autowired
-    private PatientService patientService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -38,18 +31,6 @@ public class DoctorController {
 
         if (doctorsOfPatient != null) {
             return ResponseEntity.status(HttpStatus.OK).body(doctorsOfPatient);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }
-
-    // Find all patients of a doctor
-    public ResponseEntity<List<OldPatientDTO>> getAllPatientByDoctorID(@PathVariable Long id) {
-
-        List<OldPatientDTO> patients = patientService.getAllPatientByDoctorID(id);
-
-        if (patients != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(patients);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -82,6 +63,7 @@ public class DoctorController {
         }
     }
 
+
     // Confirm username and password of a doctor
 
     @PostMapping("/doctor/{id}")
@@ -107,6 +89,7 @@ public class DoctorController {
 
 
     }
+
 
     //getReviewsByDoctor
     @GetMapping("/doctor/{id}/reviews")

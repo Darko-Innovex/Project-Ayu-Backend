@@ -1,6 +1,7 @@
 package lk.darkoinnovex.Ayu.entity;
 
 import jakarta.persistence.*;
+import lk.darkoinnovex.Ayu.dto.PatientDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -58,4 +59,28 @@ public class Patient {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "patient")
     private List<Allergy> allergyList;
+
+    public PatientDTO toDto() {
+
+        String[] names = name.split(" ");
+
+        PatientDTO patientDTO = new PatientDTO();
+
+        patientDTO.setId(id);
+        patientDTO.setFirstName(names[0]);
+        patientDTO.setLastName(names[1]);
+        patientDTO.setDob(dob);
+        patientDTO.setNic(nic);
+        patientDTO.setMobile(mobile);
+        patientDTO.setEmail(email);
+        patientDTO.setBloodType(bloodType);
+        patientDTO.setPassword(password);
+        patientDTO.setHealthCardPin(healthCard.getPinNo());
+
+        if (this.hospital != null) {
+            patientDTO.setHospitalId(hospital.getId());
+        }
+
+        return patientDTO;
+    }
 }

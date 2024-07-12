@@ -1,6 +1,7 @@
 package lk.darkoinnovex.Ayu.entity;
 
 import jakarta.persistence.*;
+import lk.darkoinnovex.Ayu.dto.HealthCardDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,5 +22,13 @@ public class HealthCard {
     private Long pinNo;
 
     @Column(nullable = false)
-    private String status = "Connected";
+    private String status = "Not Reserved";
+
+    public HealthCardDTO toDto() {
+        return new HealthCardDTO(
+                id,
+                pinNo,
+                status
+        );
+    }
 }

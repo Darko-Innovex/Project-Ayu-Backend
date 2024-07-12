@@ -23,7 +23,7 @@ public class MedicalReport {
     private Timestamp timestamp;
 
     @Column(nullable = false)
-    private byte[] file;
+    private String file;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Doctor doctor;

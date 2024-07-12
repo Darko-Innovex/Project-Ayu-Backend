@@ -10,11 +10,13 @@ import lk.darkoinnovex.Ayu.repository.*;
 import lk.darkoinnovex.Ayu.service.MedicineBillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,9 +24,6 @@ public class MedicineBillServiceImpl implements MedicineBillService {
 
     @Autowired
     private MedicineBillRepository medicineBillRepository;
-
-    @Autowired
-    private AppointmentRepository appointmentRepository;
 
     @Autowired
     private PatientRepository patientRepository;
@@ -36,6 +35,7 @@ public class MedicineBillServiceImpl implements MedicineBillService {
     private MedicineRepository medicineRepository;
 
     @Override
+    @Transactional
     public MedicineBillDTO saveMedicineBill(MedicineBillDTO medicineBillDTO) {
 
         Doctor doctor = doctorRepository.findById(medicineBillDTO.getDoctorId()).orElse(null);
@@ -51,8 +51,28 @@ public class MedicineBillServiceImpl implements MedicineBillService {
 
             if (save != null) {
 
-                medicineBillDTO.setId(save.getId());
-                return medicineBillDTO;
+                List<Medicine> medicines = medicineBillDTO.getMedicineList().stream()
+                        .map(medicineDTO -> {
+                            Medicine medicine = medicineDTO.toEntity();
+                            medicine.setMedicineBill(save);
+                            return medicine;
+                        }).toList();
+
+                boolean allSaved = true;
+
+                for (Medicine medicine : medicines) {
+                    try {
+                        medicineRepository.save(medicine);
+                    } catch (Exception e) {
+                        allSaved = false;
+                        break;
+                    }
+                }
+
+                if (allSaved) {
+                    medicineBillDTO.setId(save.getId());
+                    return medicineBillDTO;
+                }
             }
         }
 
@@ -86,7 +106,9 @@ public class MedicineBillServiceImpl implements MedicineBillService {
         MedicineBill medicineBill = medicineBillRepository.findById(medicineBillId).orElse(null);
 
         if (medicineBill != null) {
-            return new MedicineBillDTO(medicineBill.getId(), medicineBill.getDoctor().getId(), medicineBill.getTimestamp());
+
+
+            return new MedicineBillDTO(medicineBill.getId(), medicineBill.getDoctor().getId(), medicineBill.getTimestamp(), getMedicineAsAList(medicineBill.getMedicine()));
         }
         return null;
     }
@@ -97,7 +119,7 @@ public class MedicineBillServiceImpl implements MedicineBillService {
 
         if (all != null) {
 
-            return all.stream().map(medicineBill -> new MedicineBillDTO(medicineBill.getId(), medicineBill.getDoctor().getId(), medicineBill.getTimestamp())).toList();
+            return all.stream().map(medicineBill -> new MedicineBillDTO(medicineBill.getId(), medicineBill.getDoctor().getId(), medicineBill.getTimestamp(), getMedicineAsAList(medicineBill.getMedicine()))).toList();
         }
 
         return null;
@@ -109,7 +131,7 @@ public class MedicineBillServiceImpl implements MedicineBillService {
         MedicineBill medicineBill = medicineBillRepository.findMedicineBillOfAppointment(appointmentId).orElse(null);
 
         if (medicineBill != null) {
-            return new MedicineBillDTO(medicineBill.getId(), medicineBill.getDoctor().getId(), medicineBill.getTimestamp());
+            return new MedicineBillDTO(medicineBill.getId(), medicineBill.getDoctor().getId(), medicineBill.getTimestamp(), getMedicineAsAList(medicineBill.getMedicine()));
         }
 
         return null;
@@ -122,11 +144,22 @@ public class MedicineBillServiceImpl implements MedicineBillService {
 
         if (patient != null) {
 
-            List<Medicine> medicines = medicineBillRepository.getCurrentDrugListOfPatient(patient).orElse(null);
+//            List<Medicine> medicines = medicineBillRepository.getCurrentDrugListOfPatient(patient).orElse(null);
 
-            if (medicines != null) {
 
-                return medicines.stream().map(medicine -> new MedicineDTO(medicine.getId(), medicine.getTimestamp(), medicine.getDayCount(), medicine.getMedicineName(), medicine.getMedicineBrand(), medicine.getMedicineWeight(), medicine.getDose(), medicine.getDosesPerDay())).toList();
+            if (true) {
+                long currentTimeMillis = System.currentTimeMillis();
+
+                // Create a Timestamp object using the current time
+                Timestamp timestamp = new Timestamp(currentTimeMillis);
+
+                ArrayList<MedicineDTO> list = new ArrayList<>();
+
+                list.add( new MedicineDTO(1L, timestamp, 7, "Medicine A", "Brand A", 30.0, 2.5, "Morning, Noon"));
+                list.add( new MedicineDTO(2L, timestamp, 7, "Medicine B", "Brand B", 40.0, 3.0, "Noon"));
+
+                return list;
+//                return medicines.stream().map(medicine -> new MedicineDTO(medicine.getId(), medicine.getTimestamp(), medicine.getDayCount(), medicine.getMedicineName(), medicine.getMedicineBrand(), medicine.getMedicineWeight(), medicine.getDose(), medicine.getDosesPerDay())).toList();
             }
         }
 
@@ -167,4 +200,12 @@ public class MedicineBillServiceImpl implements MedicineBillService {
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
     }
+
+    public List<MedicineDTO> getMedicineAsAList(List<Medicine> medicineList) {
+        List<MedicineDTO> list = medicineList.stream().map(medicine -> new MedicineDTO(medicine.getId(), medicine.getTimestamp(), medicine.getDayCount(), medicine.getMedicineName(), medicine.getMedicineBrand(),
+                medicine.getMedicineWeight(), medicine.getDose(), medicine.getDosesPerDay())).toList();
+
+        return list;
+    }
+
 }

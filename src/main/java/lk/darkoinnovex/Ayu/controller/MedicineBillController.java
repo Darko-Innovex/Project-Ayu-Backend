@@ -2,6 +2,7 @@ package lk.darkoinnovex.Ayu.controller;
 
 import java.util.List;
 
+import lk.darkoinnovex.Ayu.dto.MedicineBillDTO;
 import lk.darkoinnovex.Ayu.dto.MedicineDTO;
 import lk.darkoinnovex.Ayu.service.MedicineBillService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin("*")
 public class MedicineBillController {
 
     @Autowired
@@ -29,8 +31,14 @@ public class MedicineBillController {
 
     // Save a new medicine bill
     @PostMapping("/medicine_bill")
-    public ResponseEntity<?> saveMedicineBill(@PathVariable Long bill) {
-        return ResponseEntity.status(201).body(null);
+    public ResponseEntity<?> saveMedicineBill(@RequestBody MedicineBillDTO bill) {
+        MedicineBillDTO medicineBillDTO = medicineBillService.saveMedicineBill(bill);
+
+        if (medicineBillDTO != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(medicineBillDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     // Update medicine list day count
@@ -41,6 +49,18 @@ public class MedicineBillController {
 
         if (medicineDTO != null) {
             return ResponseEntity.status(HttpStatus.OK).body(medicineDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @GetMapping("/appointment/{appointmentId}/medicine_list")
+    public ResponseEntity<MedicineBillDTO> getMedicineBillOfAppointment(@PathVariable Long appointmentId) {
+
+        MedicineBillDTO dto = medicineBillService.findMedicineBillByAppointment(appointmentId);
+
+        if (dto != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(dto);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
