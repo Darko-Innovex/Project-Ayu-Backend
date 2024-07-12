@@ -32,12 +32,13 @@ public class Doctor {
     private String email;
 
     @Column(nullable = false, unique = true)
-    private int mobile;
+    private String mobile;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] photo;
 
     @Column(nullable = false)

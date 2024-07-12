@@ -1,12 +1,16 @@
 package lk.darkoinnovex.Ayu.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lk.darkoinnovex.Ayu.dto.DoctorDTO;
 import lk.darkoinnovex.Ayu.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -15,6 +19,9 @@ public class DoctorController {
 
     @Autowired
     private DoctorService doctorService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     // Return all doctors that patient placed appointments
     @GetMapping("/patient/{id}/doctor")
@@ -55,6 +62,34 @@ public class DoctorController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
+
+
+    // Confirm username and password of a doctor
+
+    @PostMapping("/doctor/{id}")
+    public ResponseEntity<DoctorDTO> saveDoctor(@RequestPart("doctor") String doctor,
+                                                @RequestPart("photo") MultipartFile photoFile, @PathVariable Long id) {
+
+        try {
+            DoctorDTO dto = objectMapper.readValue(doctor, DoctorDTO.class);
+            dto.setPhoto(photoFile.getBytes());
+            System.out.println(dto);
+            dto = doctorService.createDoctor(dto,id);
+
+            if (dto != null) {
+                return ResponseEntity.status(HttpStatus.OK).body(dto);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
 
     //getReviewsByDoctor
     @GetMapping("/doctor/{id}/reviews")
