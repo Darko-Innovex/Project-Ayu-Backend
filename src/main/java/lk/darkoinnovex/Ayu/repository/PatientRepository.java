@@ -20,6 +20,6 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     @Query("SELECT p FROM Patient p WHERE p.healthCard=:healthCard")
     Optional<Patient> getPatientByHealthCard(@Param("healthCard") HealthCard healthCard);
 
-    @Query("SELECT p FROM Patient p WHERE p.nic=:nic AND p.password=:password")
-    Optional<Patient> findPatientBySignInInfo(@Param("nic") String nic, @Param("password") String password);
+    @Query("SELECT p FROM Patient p WHERE p.nic=:username OR p.email=:username AND p.password=:password")
+    Optional<Patient> findPatientBySignInInfo(@Param("username") String username, @Param("password") String password);
 }

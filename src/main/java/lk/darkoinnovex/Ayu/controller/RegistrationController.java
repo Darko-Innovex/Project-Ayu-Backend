@@ -22,25 +22,26 @@ public class RegistrationController {
     private DoctorService doctorService;
 
     // Confirm username and password
-    @GetMapping("/sign-in")
-    public ResponseEntity<? extends BaseDTO> SignInConfig(@RequestBody SignInDTO dto) {
+    @GetMapping("/sign-up")
+    public ResponseEntity<? extends BaseDTO> SignUpConfig(@RequestBody SignInDTO dto) {
         PatientDTO patientDTO = patientService.configPatientSignIn(dto);
 
-        if (patientDTO != null) {
-
-            return ResponseEntity.status(HttpStatus.OK).body(patientDTO);
-
-        } else {
-            DoctorDTO doctorDTO = doctorService.configDoctorSignIn(dto);
-
-            if (doctorDTO != null) {
-
-                return ResponseEntity.status(HttpStatus.OK).body(doctorDTO);
-
-            } else {
-
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-            }
-        }
+//        if (patientDTO != null) {
+//
+//            return ResponseEntity.status(HttpStatus.OK).body(patientDTO);
+//
+//        } else {
+//            DoctorDTO doctorDTO = doctorService.configDoctorSignIn(dto);
+//
+//            if (doctorDTO != null) {
+//
+//                return ResponseEntity.status(HttpStatus.OK).body(doctorDTO);
+//
+//            } else {
+//
+//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//            }
+//        }
+        return null;
     }
 }

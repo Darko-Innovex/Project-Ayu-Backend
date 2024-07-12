@@ -9,12 +9,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class SignInDTO {
-    private Long patientId;
-    private Long doctorId;
-    private Long hospitalId;
-    private Long adminId;
-    private String type;
-    private String username;
+public class AdminDTO {
+    private Long id;
+    private String nic;
+    private String name;
+    private String email;
+    private int mobile;
     private String password;
+    private String status ;
+    private byte[] photo;
 }
