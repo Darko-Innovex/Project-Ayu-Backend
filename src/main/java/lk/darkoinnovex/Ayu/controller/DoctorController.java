@@ -1,5 +1,7 @@
 package lk.darkoinnovex.Ayu.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lk.darkoinnovex.Ayu.dto.DoctorDTO;
 import lk.darkoinnovex.Ayu.dto.OldPatientDTO;
 import lk.darkoinnovex.Ayu.dto.SignInDTO;
@@ -10,10 +12,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 public class DoctorController {
 
     @Autowired
@@ -21,6 +26,9 @@ public class DoctorController {
     @Qualifier("patientService")
     @Autowired
     private PatientService patientService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     // Return all doctors that patient placed appointments
     @GetMapping("/patient/{id}/doctor")
@@ -54,6 +62,7 @@ public class DoctorController {
         DoctorDTO doctor = doctorService.getDoctorById(id);
 
         if (doctor != null) {
+            System.out.println(doctor);
             return ResponseEntity.status(HttpStatus.OK).body(doctor);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -74,15 +83,29 @@ public class DoctorController {
     }
 
     // Confirm username and password of a doctor
-    @GetMapping("/doctor/sign-in")
-    public ResponseEntity<DoctorDTO> doctorSignInConfig(@RequestParam String username, @RequestParam String password) {
-        DoctorDTO doctorDTO = doctorService.configDoctorSignIn(new SignInDTO(username, password));
 
-        if (doctorDTO != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(doctorDTO);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    @PostMapping("/doctor/{id}")
+    public ResponseEntity<DoctorDTO> saveDoctor(@RequestPart("doctor") String doctor,
+                                                @RequestPart("photo") MultipartFile photoFile, @PathVariable Long id) {
+
+        try {
+            DoctorDTO dto = objectMapper.readValue(doctor, DoctorDTO.class);
+            dto.setPhoto(photoFile.getBytes());
+            System.out.println(dto);
+            dto = doctorService.createDoctor(dto,id);
+
+            if (dto != null) {
+                return ResponseEntity.status(HttpStatus.OK).body(dto);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
+
     }
 
     //getReviewsByDoctor

@@ -13,7 +13,7 @@ public class DoctorDTO {
     private String name;
     private String speciality;
     private String email;
-    private int mobile;
+    private String mobile;
     private String password;
     private byte[] photo;
 
