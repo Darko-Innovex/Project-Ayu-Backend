@@ -57,15 +57,22 @@ public class AppointmentController {
 
     // Return all appointments of a specific patient
     @GetMapping("/patient/{id}/appointment") 
-    public ResponseEntity<List<AppointmentDTO>> getAllAppointmentsOfPatient(@PathVariable Long id) {
+    public ResponseEntity<List<AppointmentDTO>> getAllAppointmentsOfPatient(@RequestParam("page") Integer page,
+            @RequestParam("count") Integer count, @PathVariable Long id) {
 
-        List<AppointmentDTO> dtos = appointmentService.getAppointmentsByPatientId(id);
+        List<AppointmentDTO> dtos = appointmentService.getAppointmentsByPatientId(id, page, count);
 
         if (dtos != null) {
             return ResponseEntity.status(HttpStatus.OK).body(dtos);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+    }
+
+    @GetMapping("/appointment/count/{id}")
+    public ResponseEntity<Integer> getAppointmentCount(@PathVariable Long id) {
+
+        return ResponseEntity.ok().body(appointmentService.getAppointmentCountOfPatient(id));
     }
 
     /*

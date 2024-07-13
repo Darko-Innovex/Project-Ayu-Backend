@@ -5,12 +5,16 @@ import lk.darkoinnovex.Ayu.entity.*;
 import lk.darkoinnovex.Ayu.repository.*;
 import lk.darkoinnovex.Ayu.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class AppoinmentServiceImpl implements AppointmentService {
+public class AppointmentServiceImpl implements AppointmentService {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
@@ -96,15 +100,30 @@ public class AppoinmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<AppointmentDTO> getAppointmentsByPatientId(Long id) {
+    public List<AppointmentDTO> getAppointmentsByPatientId(Long id, Integer page, Integer count) {
         Patient patient = patientRepository.findById(id).orElse(null);
 
         if(patient != null) {
-            System.out.println(patient.getId());
-            List<Appointment> appointments = appointmentRepository.findByPatientId(patient).orElse(null);
-            List<AppointmentDTO> dtos = appointments.stream().map(appointment -> new AppointmentDTO(appointment.getId(), appointment.getAppointmentNo(), appointment.getTimestamp(), appointment.getPatient().getId(), appointment.getDoctor().getId(), appointment.getHospital().getId(), appointment.getMedicalReport().getId(), appointment.getMedicineBill().getId())).toList();
 
-            return dtos;
+            Pageable pageable = PageRequest.of(page, count);
+
+            Page<Appointment> appointments = appointmentRepository.findByPatientId(patient,pageable);
+
+            List<AppointmentDTO> dtos = appointments.getContent().stream()
+                    .map(appointment -> new AppointmentDTO(
+                            appointment.getId(),
+                            appointment.getAppointmentNo(),
+                            appointment.getTimestamp(),
+                            appointment.getPatient().getId(),
+                            appointment.getDoctor().getId(),
+                            appointment.getHospital().getId(),
+                            appointment.getMedicalReport().getId(),
+                            appointment.getMedicineBill().getId()
+                    )).collect(Collectors.toList());
+
+            if (!dtos.isEmpty()) {
+                return dtos;
+            }
         }
         return null;
     }
@@ -128,6 +147,17 @@ public class AppoinmentServiceImpl implements AppointmentService {
 
         if(patient != null) {
             return appointmentRepository.countPendingAppointments(patient).orElse(0);
+        }
+
+        return null;
+    }
+
+    @Override
+    public Integer getAppointmentCountOfPatient(Long id) {
+        Patient patient = patientRepository.findById(id).orElse(null);
+
+        if(patient != null) {
+            return appointmentRepository.countAppointments(patient).orElse(0);
         }
 
         return null;
