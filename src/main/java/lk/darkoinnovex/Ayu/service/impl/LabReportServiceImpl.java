@@ -77,4 +77,16 @@ public class LabReportServiceImpl implements LabReportService {
         }
         return null;
     }
+
+    @Override
+    public Integer getLabReportsCountOfPatient(Long id) {
+
+        Patient patient = patientRepository.findById(id).orElse(null);
+
+        if (patient != null) {
+            return labReportRepository.countLabReportOfPatient(patient).orElse(0);
+        }
+
+        return null;
+    }
 }

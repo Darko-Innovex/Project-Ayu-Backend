@@ -1,6 +1,10 @@
 package lk.darkoinnovex.Ayu.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lk.darkoinnovex.Ayu.dto.OldPatientDTO;
+import lk.darkoinnovex.Ayu.service.AppointmentService;
+import lk.darkoinnovex.Ayu.service.LabReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +21,15 @@ public class PatientController {
 
     @Autowired
     private PatientService patientService;
+
+    @Autowired
+    private AppointmentService appointmentService;
+
+    @Autowired
+    private LabReportService labReportService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     // Save Patient
     @PostMapping("/patient")
@@ -92,4 +105,21 @@ public class PatientController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
+    @GetMapping("/patient/dashboard_data/{id}")
+    public ResponseEntity<ObjectNode> getPatientDashboardData(@PathVariable Long id) {
+
+        Integer completedAppointment = appointmentService.getCompletedAppointmentCountOfPatient(id);
+        Integer pendingAppointment = appointmentService.getPendingAppointmentCountOfPatient(id);
+        Integer labReportsCount = labReportService.getLabReportsCountOfPatient(id);
+
+        ObjectNode json = objectMapper.createObjectNode();
+
+        json.put("completedAppointment", completedAppointment);
+        json.put("pendingAppointment", pendingAppointment);
+        json.put("labReportsCount", labReportsCount);
+
+        return ResponseEntity.status(HttpStatus.OK).body(json);
+    }
+
 }

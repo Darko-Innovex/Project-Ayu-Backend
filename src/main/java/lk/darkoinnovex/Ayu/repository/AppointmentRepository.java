@@ -2,6 +2,8 @@ package lk.darkoinnovex.Ayu.repository;
 
 import lk.darkoinnovex.Ayu.entity.Appointment;
 import lk.darkoinnovex.Ayu.entity.Patient;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,5 +16,14 @@ import java.util.Optional;
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
     @Query("select a from Appointment a WHERE a.patient=:patient")
-    Optional<List<Appointment>> findByPatientId(@Param("patient") Patient patient);
+    Page<Appointment> findByPatientId(@Param("patient") Patient patient, Pageable pageable);
+
+    @Query("SELECT COUNT(a) FROM Appointment a WHERE a.status!='Pending' AND a.patient=:patient")
+    Optional<Integer> countCompletedAppointments(@Param("patient") Patient patient);
+
+    @Query("SELECT COUNT(a) FROM Appointment a WHERE a.status='Pending' AND a.patient=:patient")
+    Optional<Integer> countPendingAppointments(@Param("patient") Patient patient);
+
+    @Query("SELECT COUNT(a) FROM Appointment a WHERE a.patient=:patient")
+    Optional<Integer> countAppointments(@Param("patient") Patient patient);
 }
