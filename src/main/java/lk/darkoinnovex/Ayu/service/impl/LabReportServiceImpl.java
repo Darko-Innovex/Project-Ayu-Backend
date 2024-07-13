@@ -7,9 +7,13 @@ import lk.darkoinnovex.Ayu.repository.LabReportRepository;
 import lk.darkoinnovex.Ayu.repository.PatientRepository;
 import lk.darkoinnovex.Ayu.service.LabReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LabReportServiceImpl implements LabReportService {
@@ -69,11 +73,29 @@ public class LabReportServiceImpl implements LabReportService {
     }
 
     @Override
-    public List<LabReportDTO> getReportsByPatientId(Long id) {
+    public List<LabReportDTO> getReportsByPatientId(Long id, Integer page, Integer count) {
+
         Patient patient = patientRepository.findById(id).orElse(null);
+
         if (patient != null) {
-            List<LabReport> reports = labReportRepository.findByPatientId(patient).orElse(null);
-            return reports.stream().map(labReport -> new LabReportDTO(labReport.getId(), labReport.getType(), labReport.getTimestamp(), labReport.getFile(), labReport.getPatient().getId())).toList();
+
+            Pageable pageable = PageRequest.of(page, count);
+
+            Page<LabReport> reports = labReportRepository.findByPatientId(patient, pageable);
+
+            List<LabReportDTO> list = reports.getContent().stream().
+                    map(labReport -> new LabReportDTO(
+                            labReport.getId(),
+                            labReport.getType(),
+                            labReport.getTimestamp(),
+                            labReport.getFile(),
+                            labReport.getPatient().getId()
+                    )
+            ).toList();
+
+            if (!list.isEmpty()) {
+                return list;
+            }
         }
         return null;
     }
