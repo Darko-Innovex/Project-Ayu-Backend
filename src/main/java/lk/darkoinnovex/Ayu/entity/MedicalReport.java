@@ -22,8 +22,8 @@ public class MedicalReport {
     @Column(nullable = false)
     private Timestamp timestamp;
 
-    @Column(nullable = false)
-    private String file;
+    @Column(columnDefinition = "TEXT")
+    private String content;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Doctor doctor;

@@ -77,7 +77,7 @@ public class DoctorController {
             dto = doctorService.createDoctor(dto,id);
 
             if (dto != null) {
-                return ResponseEntity.status(HttpStatus.OK).body(dto);
+                return ResponseEntity.status(HttpStatus.CREATED).body(dto);
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
             }
@@ -86,7 +86,6 @@ public class DoctorController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
 
     }
 

@@ -25,7 +25,8 @@ public class LabReport {
     @Column(nullable = false)
     private Timestamp timestamp;
 
-    @Column(nullable = false)
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] file;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
