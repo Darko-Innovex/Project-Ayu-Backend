@@ -12,4 +12,6 @@ public interface AppointmentService {
     AppointmentDTO updateAppointment(AppointmentDTO appointmentDTO);
     AppointmentDTO getAppointmentById(Long id);
     List<AppointmentDTO> getAppointmentsByPatientId(Long id);
+    Integer getCompletedAppointmentCountOfPatient(Long id);
+    Integer getPendingAppointmentCountOfPatient(Long id);
 }

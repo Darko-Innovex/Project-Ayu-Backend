@@ -14,4 +14,8 @@ import java.util.Optional;
 public interface LabReportRepository extends JpaRepository<LabReport, Long> {
     @Query("select l from LabReport l WHERE l.patient=:patient")
     Optional<List<LabReport>> findByPatientId(@Param("patient") Patient patient);
+
+    @Query("SELECT COUNT(l) FROM LabReport l WHERE l.patient=:patient")
+    Optional<Integer> countLabReportOfPatient(@Param("patient") Patient patient);
+
 }

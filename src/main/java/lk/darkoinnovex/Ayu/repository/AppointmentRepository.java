@@ -15,4 +15,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     @Query("select a from Appointment a WHERE a.patient=:patient")
     Optional<List<Appointment>> findByPatientId(@Param("patient") Patient patient);
+
+    @Query("SELECT COUNT(a) FROM Appointment a WHERE a.status!='Pending' AND a.patient=:patient")
+    Optional<Integer> countCompletedAppointments(@Param("patient") Patient patient);
+
+    @Query("SELECT COUNT(a) FROM Appointment a WHERE a.status='Pending' AND a.patient=:patient")
+    Optional<Integer> countPendingAppointments(@Param("patient") Patient patient);
 }

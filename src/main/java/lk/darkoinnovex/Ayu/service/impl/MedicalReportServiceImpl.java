@@ -29,7 +29,7 @@ public class MedicalReportServiceImpl implements MedicalReportService {
     @Override
     public List<MedicalReportDTO> getAllReports() {
         List<MedicalReport> reports = medicalReportRepository.findAll();
-        return reports.stream().map(medicalReport -> new MedicalReportDTO(medicalReport.getId(), medicalReport.getTimestamp(), medicalReport.getFile(), medicalReport.getDoctor().getId())).toList();
+        return reports.stream().map(medicalReport -> new MedicalReportDTO(medicalReport.getId(), medicalReport.getTimestamp(), medicalReport.getContent(), medicalReport.getDoctor().getId())).toList();
     }
 
     @Override
@@ -38,11 +38,11 @@ public class MedicalReportServiceImpl implements MedicalReportService {
         if (doctor != null) {
             MedicalReport medicalReport = new MedicalReport();
             medicalReport.setTimestamp(dto.getTimestamp());
-            medicalReport.setFile(dto.getFile());
+            medicalReport.setContent(dto.getFile());
             medicalReport.setDoctor(doctor);
 
             MedicalReport savedMedicalReport = medicalReportRepository.save(medicalReport);
-            return new MedicalReportDTO(savedMedicalReport.getId(), savedMedicalReport.getTimestamp(), savedMedicalReport.getFile(), savedMedicalReport.getDoctor().getId());
+            return new MedicalReportDTO(savedMedicalReport.getId(), savedMedicalReport.getTimestamp(), savedMedicalReport.getContent(), savedMedicalReport.getDoctor().getId());
         }
         return null;
     }
@@ -55,11 +55,11 @@ public class MedicalReportServiceImpl implements MedicalReportService {
         if (doctor != null || medicalReport != null) {
 
             medicalReport.setTimestamp(dto.getTimestamp());
-            medicalReport.setFile(dto.getFile());
+            medicalReport.setContent(dto.getFile());
             medicalReport.setDoctor(doctor);
 
             MedicalReport savedMedicalReport = medicalReportRepository.save(medicalReport);
-            return new MedicalReportDTO(savedMedicalReport.getId(), savedMedicalReport.getTimestamp(), savedMedicalReport.getFile(), savedMedicalReport.getDoctor().getId());
+            return new MedicalReportDTO(savedMedicalReport.getId(), savedMedicalReport.getTimestamp(), savedMedicalReport.getContent(), savedMedicalReport.getDoctor().getId());
         }
 
         return null;
@@ -70,7 +70,7 @@ public class MedicalReportServiceImpl implements MedicalReportService {
         MedicalReport medicalReport = medicalReportRepository.findById(id).orElse(null);
 
         if (medicalReport != null) {
-            return new MedicalReportDTO(medicalReport.getId(), medicalReport.getTimestamp(), medicalReport.getFile(), medicalReport.getDoctor().getId());
+            return new MedicalReportDTO(medicalReport.getId(), medicalReport.getTimestamp(), medicalReport.getContent(), medicalReport.getDoctor().getId());
         }
 
         return null;
@@ -80,7 +80,7 @@ public class MedicalReportServiceImpl implements MedicalReportService {
     public MedicalReportDTO getReportByAppoinmentId(Long id) {
         MedicalReport medicalReport = medicalReportRepository.findByAppoinmentId(id).orElse(null);
         if (medicalReport != null) {
-            return new MedicalReportDTO(medicalReport.getId(), medicalReport.getTimestamp(), medicalReport.getFile(), medicalReport.getDoctor().getId());
+            return new MedicalReportDTO(medicalReport.getId(), medicalReport.getTimestamp(), medicalReport.getContent(), medicalReport.getDoctor().getId());
         }
         return null;
     }
@@ -91,7 +91,7 @@ public class MedicalReportServiceImpl implements MedicalReportService {
 
         if (patient != null) {
             List<MedicalReport> reports = medicalReportRepository.findByPatientId(patient);
-            return reports.stream().map(medicalReport -> new MedicalReportDTO(medicalReport.getId(), medicalReport.getTimestamp(), medicalReport.getFile(), medicalReport.getDoctor().getId())).toList();
+            return reports.stream().map(medicalReport -> new MedicalReportDTO(medicalReport.getId(), medicalReport.getTimestamp(), medicalReport.getContent(), medicalReport.getDoctor().getId())).toList();
         }
         return null;
     }

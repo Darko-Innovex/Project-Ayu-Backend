@@ -108,4 +108,28 @@ public class AppoinmentServiceImpl implements AppointmentService {
         }
         return null;
     }
+
+    @Override
+    public Integer getCompletedAppointmentCountOfPatient(Long id) {
+
+        Patient patient = patientRepository.findById(id).orElse(null);
+
+        if(patient != null) {
+            return appointmentRepository.countCompletedAppointments(patient).orElse(0);
+        }
+
+        return null;
+    }
+
+    @Override
+    public Integer getPendingAppointmentCountOfPatient(Long id) {
+
+        Patient patient = patientRepository.findById(id).orElse(null);
+
+        if(patient != null) {
+            return appointmentRepository.countPendingAppointments(patient).orElse(0);
+        }
+
+        return null;
+    }
 }
