@@ -25,9 +25,10 @@ public class LabReportController {
     
     // Return all lab reports of a specific patient
     @GetMapping("/patient/{id}/lab_reports") 
-    public ResponseEntity<List<LabReportDTO>> getAllLabReportsOfPatient(@PathVariable Long id) {
+    public ResponseEntity<List<LabReportDTO>> getAllLabReportsOfPatient(@RequestParam("page") Integer page,
+                                                                        @RequestParam("count") Integer count, @PathVariable Long id) {
 
-        List<LabReportDTO> dtos = labReportService.getReportsByPatientId(id);
+        List<LabReportDTO> dtos = labReportService.getReportsByPatientId(id, page, count);
 
         if (dtos != null) {
             return  ResponseEntity.status(HttpStatus.OK).body(dtos);

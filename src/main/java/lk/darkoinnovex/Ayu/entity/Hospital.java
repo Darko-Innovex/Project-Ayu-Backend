@@ -48,4 +48,7 @@ public class Hospital {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "hospital")
     private List<DoctorList> doctorList;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "hospital")
+    private List<Notification> notifications;
 }

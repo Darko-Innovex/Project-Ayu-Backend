@@ -60,6 +60,9 @@ public class Patient {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "patient")
     private List<Allergy> allergyList;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "patient")
+    private List<Notification> notifications;
+
     public PatientDTO toDto() {
 
         String[] names = name.split(" ");

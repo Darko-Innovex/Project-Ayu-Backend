@@ -17,6 +17,7 @@ public interface LabReportService {
 
     LabReportDTO getLabReportById(Long id);
 
-    List<LabReportDTO> getReportsByPatientId(Long id);
+    List<LabReportDTO> getReportsByPatientId(Long id, Integer page, Integer count);
+
     Integer getLabReportsCountOfPatient(Long id);
 }

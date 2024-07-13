@@ -17,10 +17,11 @@ public interface MedicineBillRepository extends JpaRepository<MedicineBill, Long
     @Query("select a.medicineBill from Appointment a where a.id=:appointmentId")
     Optional<MedicineBill> findMedicineBillOfAppointment(@Param("appointmentId") Long appointmentId);
 
-    @Query(value = "SELECT m.* FROM Medicine m " +
-            "JOIN Appointment a ON a.medicineBill = m.medicineBill " +
-            "WHERE a.patient = :patient AND " +
-            "DATE_ADD(m.timestamp, INTERVAL m.dayCount DAY) >= CURRENT_DATE",
-            nativeQuery = true)
-    Optional<List<Medicine>> getCurrentDrugListOfPatient(@Param("patient") Patient patient);
+    @Query("SELECT m FROM Appointment a " +
+            "JOIN a.medicineBill mb " +
+            "JOIN mb.medicine m " +
+            "WHERE a.patient = :patient " +
+            "AND FUNCTION('DATE_ADD', m.timestamp, FUNCTION('INTERVAL', m.dayCount, 'DAY')) >= CURRENT_DATE")
+    Optional<List<Medicine>> getCurrentDrugListOfPatient(@Param("patientId") Patient patient);
+
 }
