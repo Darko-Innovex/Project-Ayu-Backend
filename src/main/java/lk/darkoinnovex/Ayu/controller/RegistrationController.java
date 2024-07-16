@@ -1,11 +1,7 @@
 package lk.darkoinnovex.Ayu.controller;
 
-import lk.darkoinnovex.Ayu.dto.DoctorDTO;
 import lk.darkoinnovex.Ayu.dto.PatientDTO;
-import lk.darkoinnovex.Ayu.dto.SignInDTO;
-import lk.darkoinnovex.Ayu.service.DoctorService;
 import lk.darkoinnovex.Ayu.service.PatientService;
-import lk.darkoinnovex.Ayu.util.BaseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,30 +14,17 @@ public class RegistrationController {
     @Autowired
     private PatientService patientService;
 
-    @Autowired
-    private DoctorService doctorService;
+    // Register new Patient
+    @PostMapping("/auth/sign-up")
+    public ResponseEntity<String> SignUpConfig(@RequestBody PatientDTO dto) {
+        System.out.println(dto);
+        PatientDTO patient = patientService.createPatient(dto);
 
-    // Confirm username and password
-    @GetMapping("/sign-up")
-    public ResponseEntity<? extends BaseDTO> SignUpConfig(@RequestBody SignInDTO dto) {
-        PatientDTO patientDTO = patientService.configPatientSignIn(dto);
+        if (patient != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body("Patient created");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Patient not created");
+        }
 
-//        if (patientDTO != null) {
-//
-//            return ResponseEntity.status(HttpStatus.OK).body(patientDTO);
-//
-//        } else {
-//            DoctorDTO doctorDTO = doctorService.configDoctorSignIn(dto);
-//
-//            if (doctorDTO != null) {
-//
-//                return ResponseEntity.status(HttpStatus.OK).body(doctorDTO);
-//
-//            } else {
-//
-//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-//            }
-//        }
-        return null;
     }
 }

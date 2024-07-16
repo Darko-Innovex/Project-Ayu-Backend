@@ -22,6 +22,6 @@ public interface MedicineBillRepository extends JpaRepository<MedicineBill, Long
             "JOIN mb.medicine m " +
             "WHERE a.patient = :patient " +
             "AND FUNCTION('DATE_ADD', m.timestamp, FUNCTION('INTERVAL', m.dayCount, 'DAY')) >= CURRENT_DATE")
-    Optional<List<Medicine>> getCurrentDrugListOfPatient(@Param("patientId") Patient patient);
+    Optional<List<Medicine>> getCurrentDrugListOfPatient(@Param("patient") Patient patient);
 
 }

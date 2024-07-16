@@ -78,10 +78,13 @@ public class Patient {
         patientDTO.setEmail(email);
         patientDTO.setBloodType(bloodType);
         patientDTO.setPassword(password);
-        patientDTO.setHealthCardPin(healthCard.getPinNo());
 
         if (this.hospital != null) {
             patientDTO.setHospitalId(hospital.getId());
+        }
+
+        if (this.healthCard != null) {
+            patientDTO.setHealthCardPin(healthCard.getPinNo());
         }
 
         return patientDTO;
