@@ -42,18 +42,6 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientDTO createPatient(PatientDTO patientDTO) {
 
-        HealthCard healthCard = null;
-
-        if (patientDTO.getHealthCardPin() == null) {
-            List<HealthCard> healthCards = healthCardRepository.getNotReservedHealthCard().orElse(null);
-
-            if (healthCards != null) {
-                healthCard = healthCards.get(0);
-            }
-
-        } else {
-            healthCard = healthCardRepository.findByPin(patientDTO.getHealthCardPin()).orElse(null);
-        }
 
         Hospital hospital = null;
 
@@ -61,23 +49,15 @@ public class PatientServiceImpl implements PatientService {
             hospital = hospitalRepository.findById(patientDTO.getHospitalId()).orElse(null);
         }
 
-        if (healthCard != null) {
+        Patient patient = patientDTO.toEntity();
+        patient.setHospital(hospital);
 
-            Patient patient = patientDTO.toEntity();
-            patient.setHealthCard(healthCard);
-            patient.setHospital(hospital);
+        Patient savedPatient = patientRepository.save(patient);
 
-            Patient savedPatient = patientRepository.save(patient);
-
-            if (savedPatient != null) {
-
-                healthCard.setStatus("Connected");
-
-                HealthCard save = healthCardRepository.save(healthCard);
-
-                return savedPatient.toDto();
-            }
+        if (savedPatient != null) {
+            return savedPatient.toDto();
         }
+
         return null;
     }
 

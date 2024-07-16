@@ -31,18 +31,6 @@ public class PatientController {
     @Autowired
     private ObjectMapper objectMapper;
 
-    // Save Patient
-    @PostMapping("/patient")
-    public ResponseEntity<PatientDTO> savePatient(@RequestBody PatientDTO patientDTO) {
-        PatientDTO patient = patientService.createPatient(patientDTO);
-
-        if (patient != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(patient);
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
-    }
-
     // Find patient by id
     @GetMapping("/patient/{id}")
     public ResponseEntity<PatientDTO> getPatientById(@PathVariable Long id) {
