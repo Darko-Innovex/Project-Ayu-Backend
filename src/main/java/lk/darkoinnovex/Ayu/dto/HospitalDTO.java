@@ -15,6 +15,5 @@ public class HospitalDTO {
     private String email;
     private int mobile;
     private String location;
-    private String password;
     private String status ;
 }

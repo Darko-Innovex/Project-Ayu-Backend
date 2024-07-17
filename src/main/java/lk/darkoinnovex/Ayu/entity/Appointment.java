@@ -37,6 +37,9 @@ public class Appointment {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Hospital hospital;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Schedule schedule;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "medical_report_id")
     private MedicalReport medicalReport;
