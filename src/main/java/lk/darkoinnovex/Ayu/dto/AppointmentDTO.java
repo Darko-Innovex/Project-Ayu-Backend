@@ -1,6 +1,5 @@
 package lk.darkoinnovex.Ayu.dto;
 
-import lk.darkoinnovex.Ayu.entity.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +13,7 @@ public class AppointmentDTO {
     private Long id;
     private int appointmentNo;
     private Timestamp timestamp;
+    private String status;
     private Long patientId;
     private Long doctorId;
     private Long hospitalId;
