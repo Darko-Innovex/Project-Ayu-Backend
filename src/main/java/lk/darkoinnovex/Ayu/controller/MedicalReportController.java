@@ -1,6 +1,5 @@
 package lk.darkoinnovex.Ayu.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lk.darkoinnovex.Ayu.dto.MedicalReportDTO;
 import lk.darkoinnovex.Ayu.service.MedicalReportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +15,6 @@ public class MedicalReportController {
 
     @Autowired
     private MedicalReportService medicalReportService;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     // Return medical report of a specific appointment
     @GetMapping("/appointment/{id}/medical_report")

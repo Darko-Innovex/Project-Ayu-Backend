@@ -1,7 +1,6 @@
 package lk.darkoinnovex.Ayu.dto;
 
 import lk.darkoinnovex.Ayu.entity.Patient;
-import lk.darkoinnovex.Ayu.util.BaseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

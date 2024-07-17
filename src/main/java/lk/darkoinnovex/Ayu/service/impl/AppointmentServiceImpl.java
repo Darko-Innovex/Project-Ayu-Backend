@@ -37,7 +37,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public List<AppointmentDTO> getAllAppointments() {
         List<Appointment> appointments = appointmentRepository.findAll();
-        List<AppointmentDTO> dtos = appointments.stream().map(appointment -> new AppointmentDTO(appointment.getId(), appointment.getAppointmentNo(), appointment.getTimestamp(), appointment.getDoctor().getId(), appointment.getHospital().getId(), appointment.getMedicalReport().getId(), appointment.getMedicineBill().getId(), appointment.getPatient().getId())).toList();
+        List<AppointmentDTO> dtos = appointments.stream().map(appointment -> new AppointmentDTO(appointment.getId(), appointment.getAppointmentNo(), appointment.getTimestamp(), appointment.getStatus(), appointment.getDoctor().getId(), appointment.getHospital().getId(), appointment.getMedicalReport().getId(), appointment.getMedicineBill().getId(), appointment.getPatient().getId())).toList();
         return dtos;
     }
 
@@ -59,7 +59,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             appointment.setMedicineBill(medicineBill);
             appointment.setPatient(patient);
             Appointment savedAppointment = appointmentRepository.save(appointment);
-            return new AppointmentDTO(savedAppointment.getId(), savedAppointment.getAppointmentNo(), savedAppointment.getTimestamp(), savedAppointment.getDoctor().getId(), savedAppointment.getHospital().getId(), savedAppointment.getMedicalReport().getId(), savedAppointment.getMedicineBill().getId(), savedAppointment.getPatient().getId());
+            return new AppointmentDTO(savedAppointment.getId(), savedAppointment.getAppointmentNo(), savedAppointment.getTimestamp(), appointment.getStatus(), savedAppointment.getDoctor().getId(), savedAppointment.getHospital().getId(), savedAppointment.getMedicalReport().getId(), savedAppointment.getMedicineBill().getId(), savedAppointment.getPatient().getId());
         }
         return null;
     }
@@ -84,7 +84,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 appointment.setMedicineBill(medicineBill);
                 appointment.setPatient(patient);
                 Appointment savedAppointment = appointmentRepository.save(appointment);
-                return new AppointmentDTO(savedAppointment.getId(), savedAppointment.getAppointmentNo(), savedAppointment.getTimestamp(), savedAppointment.getDoctor().getId(), savedAppointment.getHospital().getId(), savedAppointment.getMedicalReport().getId(), savedAppointment.getMedicineBill().getId(), savedAppointment.getPatient().getId());
+                return new AppointmentDTO(savedAppointment.getId(), savedAppointment.getAppointmentNo(), savedAppointment.getTimestamp(), appointment.getStatus(), savedAppointment.getDoctor().getId(), savedAppointment.getHospital().getId(), savedAppointment.getMedicalReport().getId(), savedAppointment.getMedicineBill().getId(), savedAppointment.getPatient().getId());
             }
         }
         return null;
@@ -94,7 +94,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     public AppointmentDTO getAppointmentById(Long id) {
         Appointment appointment = appointmentRepository.findById(id).orElse(null);
         if (appointment != null) {
-            return new AppointmentDTO(appointment.getId(), appointment.getAppointmentNo(), appointment.getTimestamp(), appointment.getDoctor().getId(), appointment.getHospital().getId(), appointment.getMedicalReport().getId(), appointment.getMedicineBill().getId(), appointment.getPatient().getId());
+            return new AppointmentDTO(appointment.getId(), appointment.getAppointmentNo(), appointment.getTimestamp(), appointment.getStatus(), appointment.getDoctor().getId(), appointment.getHospital().getId(), appointment.getMedicalReport().getId(), appointment.getMedicineBill().getId(), appointment.getPatient().getId());
         }
         return null;
     }
@@ -114,6 +114,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                             appointment.getId(),
                             appointment.getAppointmentNo(),
                             appointment.getTimestamp(),
+                            appointment.getStatus(),
                             appointment.getPatient().getId(),
                             appointment.getDoctor().getId(),
                             appointment.getHospital().getId(),
