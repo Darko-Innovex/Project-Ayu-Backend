@@ -1,5 +1,6 @@
 package lk.darkoinnovex.Ayu.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import lk.darkoinnovex.Ayu.dto.AppointmentDTO;
@@ -31,12 +32,12 @@ public class AppointmentController {
 
     // Update an appointment
     @PutMapping("/appointment/{id}")
-    public ResponseEntity<AppointmentDTO> updateAppointment(@PathVariable Long id, @RequestBody AppointmentDTO appointmentDTO) {
+    public ResponseEntity<String> updateAppointment(@PathVariable Long id) {
 
-        AppointmentDTO dto = appointmentService.updateAppointment(appointmentDTO);
+        AppointmentDTO dto = appointmentService.updateAppointment(id);
 
         if (dto != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(dto);
+            return ResponseEntity.status(HttpStatus.OK).body("Appointment canceled");
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
@@ -75,14 +76,24 @@ public class AppointmentController {
         return ResponseEntity.ok().body(appointmentService.getAppointmentCountOfPatient(id));
     }
 
-    /*
     // Return all appointment of a specific patient on a specific date
     @GetMapping("/patient/{id}/appointment/date")
-    public ResponseEntity<List<Appointment>> getAllAppointmentOfPatientOnDate(@PathVariable Long id, @RequestParam LocalDate date) {
-        return ResponseEntity.status(200).body(new ArrayList<Appointment>());
+    public ResponseEntity<List<AppointmentDTO>> getAllAppointmentOfPatientOnDate(
+            @PathVariable Long id,
+            @RequestParam("date") LocalDate date,
+            @RequestParam("page") Integer page,
+            @RequestParam("count") Integer count) {
+
+        List<AppointmentDTO> dtos = appointmentService.getAllAppointmentOfPatientOnDate(id, date, page, count);
+
+        if (dtos != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(dtos);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
-    // Return all appointment of a specific patient on a specific time period
+/*    // Return all appointment of a specific patient on a specific time period
     @GetMapping("/patient/{id}/appointment/time_period")
     public ResponseEntity<List<Appointment>> getAllAppointmentOfPatientOnTimePeriod(@PathVariable Long id, @RequestParam LocalDate from, @RequestParam LocalDate to) {
         return ResponseEntity.status(200).body(new ArrayList<Appointment>());

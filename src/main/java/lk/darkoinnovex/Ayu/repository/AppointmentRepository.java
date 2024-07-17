@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 
 @Repository
@@ -25,4 +26,17 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     @Query("SELECT COUNT(a) FROM Appointment a WHERE a.patient=:patient")
     Optional<Integer> countAppointments(@Param("patient") Patient patient);
+
+    @Query("SELECT a FROM Appointment a WHERE a.patient = :patient AND a.timestamp = :date")
+    Page<Appointment> findAppointmentsByPatientIdAndDate(
+            @Param("patient") Patient patient,
+            @Param("date") Timestamp date,
+            Pageable pageable);
+
+    @Query("SELECT a FROM Appointment a WHERE a.patient = :patient AND a.timestamp BETWEEN :startDate AND :endDate")
+    Page<Appointment> findAppointmentsByPatientIdAndDateRange(
+            @Param("patient") Patient patient,
+            @Param("startDate") Timestamp startDate,
+            @Param("endDate") Timestamp endDate,
+            Pageable pageable);
 }

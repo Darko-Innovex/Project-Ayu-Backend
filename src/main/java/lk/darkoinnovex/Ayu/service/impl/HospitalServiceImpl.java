@@ -15,18 +15,39 @@ public class HospitalServiceImpl implements HospitalService {
     private HospitalRepository hospitalRepository;
 
     @Override
-    public HospitalDTO configHospitalSignIn(SignInDTO signInDTO) {
-        Hospital hospital = hospitalRepository.findHospitalBySignInInfo(signInDTO.getUsername(), signInDTO.getPassword()).orElse(null);
+    public HospitalDTO getHospitalById(Long id) {
+        Hospital hospital = hospitalRepository.findById(id).orElse(null);
 
-        if(hospital != null){
+        if (hospital != null) {
             HospitalDTO hospitalDTO = new HospitalDTO();
+
             hospitalDTO.setId(hospital.getId());
             hospitalDTO.setName(hospital.getName());
             hospitalDTO.setLocation(hospital.getLocation());
             hospitalDTO.setEmail(hospital.getEmail());
             hospitalDTO.setMobile(hospital.getMobile());
-            hospitalDTO.setPassword(hospital.getPassword());
             hospitalDTO.setStatus(hospital.getStatus());
+
+            return hospitalDTO;
+        }
+
+        return null;
+    }
+
+    @Override
+    public HospitalDTO configHospitalSignIn(SignInDTO signInDTO) {
+        Hospital hospital = hospitalRepository.findHospitalBySignInInfo(signInDTO.getUsername(), signInDTO.getPassword()).orElse(null);
+
+        if(hospital != null){
+            HospitalDTO hospitalDTO = new HospitalDTO();
+
+            hospitalDTO.setId(hospital.getId());
+            hospitalDTO.setName(hospital.getName());
+            hospitalDTO.setLocation(hospital.getLocation());
+            hospitalDTO.setEmail(hospital.getEmail());
+            hospitalDTO.setMobile(hospital.getMobile());
+            hospitalDTO.setStatus(hospital.getStatus());
+
             return hospitalDTO;
         }
         return null;
