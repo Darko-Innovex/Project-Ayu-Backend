@@ -167,8 +167,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             Pageable pageable = PageRequest.of(page, count);
 
-            Page<Appointment> appointments = appointmentRepository.findAppointmentsByPatientIdAndDate(
-                    patient, Timestamp.valueOf(date.atStartOfDay()), pageable);
+            Timestamp start = Timestamp.valueOf(date.atStartOfDay());
+            Timestamp end = Timestamp.valueOf(date.atTime(LocalTime.MAX));
+
+            Page<Appointment> appointments = appointmentRepository.findAppointmentsByPatientIdAndDateRange(
+                    patient, start, end, pageable);
 
             List<AppointmentDTO> dtos = appointments.getContent().stream()
                     .map(appointment -> new AppointmentDTO(

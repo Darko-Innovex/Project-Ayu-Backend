@@ -8,6 +8,8 @@ import lk.darkoinnovex.Ayu.service.HospitalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class HospitalServiceImpl implements HospitalService {
 
@@ -50,6 +52,17 @@ public class HospitalServiceImpl implements HospitalService {
 
             return hospitalDTO;
         }
+        return null;
+    }
+
+    @Override
+    public List<String> getAllHospitalsLocations() {
+        List<String> locations = hospitalRepository.findAllHospitalsLocations().orElse(null);
+
+        if (locations != null) {
+            return locations;
+        }
+
         return null;
     }
 }

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin("*")
 public class HospitalController {
@@ -25,6 +27,19 @@ public class HospitalController {
 
         if (dto != null) {
             return ResponseEntity.status(HttpStatus.OK).body(dto);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    // Find all hospital locations
+    @GetMapping("/hospital/location")
+    public ResponseEntity<List<String>> getAllHospitalsLocation() {
+
+        List<String> locations = hospitalService.getAllHospitalsLocations();
+
+        if (locations != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(locations);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }

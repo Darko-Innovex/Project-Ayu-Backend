@@ -93,9 +93,21 @@ public class AppointmentController {
         }
     }
 
-/*    // Return all appointment of a specific patient on a specific time period
+    // Return all appointment of a specific patient on a specific time period
     @GetMapping("/patient/{id}/appointment/time_period")
-    public ResponseEntity<List<Appointment>> getAllAppointmentOfPatientOnTimePeriod(@PathVariable Long id, @RequestParam LocalDate from, @RequestParam LocalDate to) {
-        return ResponseEntity.status(200).body(new ArrayList<Appointment>());
-    }*/
+    public ResponseEntity<List<AppointmentDTO>> getAllAppointmentOfPatientOnTimePeriod(
+            @PathVariable Long id,
+            @RequestParam("from") LocalDate from,
+            @RequestParam("to") LocalDate to,
+            @RequestParam("page") Integer page,
+            @RequestParam("count") Integer count) {
+
+        List<AppointmentDTO> dtos = appointmentService.findAppointmentsByPatientIdAndDateRange(id, from, to, page, count);
+
+        if (dtos != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(dtos);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 }
