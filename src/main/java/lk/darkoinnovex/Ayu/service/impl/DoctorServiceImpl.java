@@ -32,7 +32,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public List<DoctorDTO> getAllDoctors() {
         List<Doctor> doctors = doctorRepository.findAll();
-        List<DoctorDTO> doctorDTOS = doctors.stream().map(doctor -> new DoctorDTO(doctor.getId(), doctor.getNic(), doctor.getName(), doctor.getSpeciality(), doctor.getEmail(), doctor.getMobile(), doctor.getPassword(), doctor.getPhoto())).toList();
+        List<DoctorDTO> doctorDTOS = doctors.stream().map(doctor -> new DoctorDTO(doctor.getId(), doctor.getNic(), doctor.getName(), doctor.getSpeciality(), doctor.getEmail(), doctor.getMobile(), doctor.getPhoto())).toList();
         return doctorDTOS;
     }
 
@@ -50,7 +50,6 @@ public class DoctorServiceImpl implements DoctorService {
             doctor.setSpeciality(dto.getSpeciality());
             doctor.setEmail(dto.getEmail());
             doctor.setMobile(dto.getMobile());
-            doctor.setPassword(dto.getPassword());
             doctor.setPhoto(dto.getPhoto());
 
             Doctor savedDoctor = doctorRepository.save(doctor);
@@ -84,7 +83,6 @@ public class DoctorServiceImpl implements DoctorService {
             doctor.setEmail(dto.getEmail());
             doctor.setName(dto.getName());
             doctor.setNic(dto.getNic());
-            doctor.setPassword(dto.getPassword());
             doctor.setSpeciality(dto.getSpeciality());
 
             Doctor save = doctorRepository.save(doctor);
@@ -101,7 +99,7 @@ public class DoctorServiceImpl implements DoctorService {
     public DoctorDTO getDoctorById(Long id) {
         Doctor doctor = doctorRepository.findById(id).orElse(null);
         if (doctor != null) {
-            return new DoctorDTO(doctor.getId(), doctor.getNic(), doctor.getName(), doctor.getSpeciality(), doctor.getEmail(), doctor.getMobile(), doctor.getPassword(), doctor.getPhoto());
+            return new DoctorDTO(doctor.getId(), doctor.getNic(), doctor.getName(), doctor.getSpeciality(), doctor.getEmail(), doctor.getMobile(), doctor.getPhoto());
         }
         return null;
     }
@@ -115,7 +113,7 @@ public class DoctorServiceImpl implements DoctorService {
             List<Doctor> dotors = doctorRepository.findCompletedAppointmentDoctorsByPatientId(patient).orElse(null);
 
             if (dotors != null) {
-                return dotors.stream().map(doctor -> new DoctorDTO(doctor.getId(), doctor.getNic(), doctor.getName(), doctor.getSpeciality(), doctor.getEmail(), doctor.getMobile(), doctor.getPassword(), doctor.getPhoto())).toList();
+                return dotors.stream().map(doctor -> new DoctorDTO(doctor.getId(), doctor.getNic(), doctor.getName(), doctor.getSpeciality(), doctor.getEmail(), doctor.getMobile(), doctor.getPhoto())).toList();
             }
         }
 
@@ -128,7 +126,39 @@ public class DoctorServiceImpl implements DoctorService {
 
         if (doctor != null) {
             return new DoctorDTO(doctor.getId(), doctor.getNic()
-            , doctor.getName(), doctor.getSpeciality(), doctor.getEmail(), doctor.getMobile(), doctor.getPassword(), doctor.getPhoto());
+                    , doctor.getName(), doctor.getSpeciality(), doctor.getEmail(), doctor.getMobile(), doctor.getPhoto());
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<String> getAllSpecialityByHospital(Long hospitalId) {
+        List<String> speciality = doctorRepository.findAllSpecialties(hospitalId).orElse(null);
+
+        if (speciality != null) {
+            return speciality;
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<DoctorDTO> findDoctorsByHospitalAndSpeciality(Long hospitalId, String speciality) {
+        List<Doctor> doctors =
+                doctorRepository.findDoctorsByHospitalAndSpeciality(hospitalId, speciality).orElse(null);
+
+        if (doctors != null) {
+            return doctors.stream().map(doctor ->
+                    new DoctorDTO(
+                            doctor.getId(),
+                            doctor.getNic(),
+                            doctor.getName(),
+                            doctor.getSpeciality(),
+                            doctor.getEmail(),
+                            doctor.getMobile(),
+                            doctor.getPhoto()
+                    )).toList();
         }
 
         return null;

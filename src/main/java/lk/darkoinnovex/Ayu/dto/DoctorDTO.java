@@ -14,7 +14,6 @@ public class DoctorDTO {
     private String speciality;
     private String email;
     private String mobile;
-    private String password;
     private byte[] photo;
 
 }

@@ -5,10 +5,7 @@ import lk.darkoinnovex.Ayu.service.HospitalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,6 +37,19 @@ public class HospitalController {
 
         if (locations != null) {
             return ResponseEntity.status(HttpStatus.OK).body(locations);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    // Find all hospitals in a location
+    @GetMapping("/location/hospital")
+    public ResponseEntity<List<HospitalDTO>> getAllHospitalByLocation(@RequestParam String location) {
+
+        List<HospitalDTO> hospitals = hospitalService.getAllHospitalByLocation(location);
+
+        if (hospitals != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(hospitals);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }

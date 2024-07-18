@@ -16,4 +16,7 @@ public interface HospitalRepository extends JpaRepository<Hospital, Long> {
 
     @Query("SELECT DISTINCT(h.location) FROM Hospital h")
     Optional<List<String>> findAllHospitalsLocations();
+
+    @Query("SELECT h FROM Hospital h WHERE h.location = :location")
+    Optional<List<Hospital>> findAllHospitalByLocation(String location);
 }
