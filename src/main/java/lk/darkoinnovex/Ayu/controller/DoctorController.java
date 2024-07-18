@@ -89,11 +89,37 @@ public class DoctorController {
 
     }
 
-
     //getReviewsByDoctor
     @GetMapping("/doctor/{id}/reviews")
     public ResponseEntity<Object> getReviewsByDoctor(@PathVariable Long id) {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+
+    // Get all specialities of doctors
+    @GetMapping("/doctor/speciality")
+    public ResponseEntity<List<String>> getDoctorSpeciality(@RequestParam Long hospitalId) {
+        List<String> speciality = doctorService.getAllSpecialityByHospital(hospitalId);
+
+        if (speciality != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(speciality);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    // Get all doctor by speciality and hospital
+    @GetMapping("/hospital/speciality/doctor")
+    public ResponseEntity<List<DoctorDTO>> getDoctorBySpecialityAndHospital(
+            @RequestPart("speciality") String speciality,
+            @RequestPart("hospital") Long hospital) {
+
+        List<DoctorDTO> doctors = doctorService.findDoctorsByHospitalAndSpeciality(hospital, speciality);
+
+        if (doctors != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(doctors);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 }

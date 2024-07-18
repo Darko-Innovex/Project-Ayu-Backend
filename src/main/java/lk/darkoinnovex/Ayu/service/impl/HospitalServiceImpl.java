@@ -65,4 +65,24 @@ public class HospitalServiceImpl implements HospitalService {
 
         return null;
     }
+
+    @Override
+    public List<HospitalDTO> getAllHospitalByLocation(String location) {
+        List<Hospital> hospitals = hospitalRepository.findAllHospitalByLocation(location).orElse(null);
+
+        if (hospitals != null) {
+            return hospitals.stream().map(hospital ->
+                    new HospitalDTO(
+                            hospital.getId(),
+                            hospital.getName(),
+                            hospital.getEmail(),
+                            hospital.getMobile(),
+                            hospital.getLocation(),
+                            hospital.getStatus()
+                    )
+            ).toList();
+        }
+
+        return null;
+    }
 }

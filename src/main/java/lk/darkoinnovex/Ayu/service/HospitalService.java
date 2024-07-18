@@ -12,4 +12,6 @@ public interface HospitalService {
     HospitalDTO configHospitalSignIn(SignInDTO signInDTO);
 
     List<String> getAllHospitalsLocations();
+
+    List<HospitalDTO> getAllHospitalByLocation(String location);
 }

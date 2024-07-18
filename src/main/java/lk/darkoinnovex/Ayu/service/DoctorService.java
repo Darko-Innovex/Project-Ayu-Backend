@@ -20,4 +20,8 @@ public interface DoctorService {
     List<DoctorDTO> getDoctorsOfPatient(Long id);
 
     DoctorDTO configDoctorSignIn(SignInDTO dto);
+
+    List<String> getAllSpecialityByHospital(Long hospitalId);
+
+    List<DoctorDTO> findDoctorsByHospitalAndSpeciality(Long hospitalId, String speciality);
 }
