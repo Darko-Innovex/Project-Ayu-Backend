@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 
 @Repository
@@ -19,4 +20,10 @@ public interface LabReportRepository extends JpaRepository<LabReport, Long> {
     @Query("SELECT COUNT(l) FROM LabReport l WHERE l.patient=:patient")
     Optional<Integer> countLabReportOfPatient(@Param("patient") Patient patient);
 
+    @Query("SELECT l FROM LabReport l WHERE l.patient = :patient AND l.timestamp BETWEEN :startDate AND :endDate")
+    Page<LabReport> findLabReportsByPatientIdAndDateRange(
+            @Param("patient") Patient patient,
+            @Param("startDate") Timestamp startDate,
+            @Param("endDate") Timestamp endDate,
+            Pageable pageable);
 }
