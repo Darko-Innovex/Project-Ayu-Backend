@@ -17,6 +17,7 @@ public class AppointmentDTO {
     private Long patientId;
     private Long doctorId;
     private Long hospitalId;
+    private Long scheduleId;
     private Long medicalReportId;
     private Long medicineBillId;
 }

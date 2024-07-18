@@ -16,12 +16,15 @@ public class HealthCardDTO {
 
     private Long pinNo;
 
+    private short password;
+
     private String status;
 
     public HealthCard toEntity() {
         return new HealthCard(
                 id,
                 pinNo,
+                password,
                 status
         );
     }

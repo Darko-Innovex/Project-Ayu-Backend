@@ -14,4 +14,6 @@ public interface HospitalService {
     List<String> getAllHospitalsLocations();
 
     List<HospitalDTO> getAllHospitalByLocation(String location);
+
+    List<String> getAllSpecialityByHospital(Long hospitalId);
 }

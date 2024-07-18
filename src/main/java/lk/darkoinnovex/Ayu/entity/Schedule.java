@@ -21,6 +21,9 @@ public class Schedule {
     private Long id;
 
     @Column(nullable = false)
+    private Timestamp date;
+
+    @Column(nullable = false)
     private Timestamp inTime;
 
     @Column(nullable = false)

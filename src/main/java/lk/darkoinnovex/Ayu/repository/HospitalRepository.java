@@ -3,6 +3,7 @@ package lk.darkoinnovex.Ayu.repository;
 import lk.darkoinnovex.Ayu.entity.Hospital;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,4 +20,9 @@ public interface HospitalRepository extends JpaRepository<Hospital, Long> {
 
     @Query("SELECT h FROM Hospital h WHERE h.location = :location")
     Optional<List<Hospital>> findAllHospitalByLocation(String location);
+
+    @Query("SELECT DISTINCT d.speciality FROM DoctorList dl " +
+            "JOIN dl.doctor d " +
+            "WHERE dl.hospital.id = :hospitalId")
+    Optional<List<String>> findAllSpecialties(@Param("hospitalId") Long hospitalId);
 }

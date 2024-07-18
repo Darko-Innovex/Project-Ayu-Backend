@@ -85,4 +85,15 @@ public class HospitalServiceImpl implements HospitalService {
 
         return null;
     }
+
+    @Override
+    public List<String> getAllSpecialityByHospital(Long hospitalId) {
+        List<String> speciality = hospitalRepository.findAllSpecialties(hospitalId).orElse(null);
+
+        if (speciality != null) {
+            return speciality;
+        }
+
+        return null;
+    }
 }
