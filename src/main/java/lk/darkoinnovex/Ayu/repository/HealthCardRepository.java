@@ -17,4 +17,7 @@ public interface HealthCardRepository extends JpaRepository<HealthCard, Long> {
 
     @Query("SELECT h FROM HealthCard h WHERE h.status='Not Reserved'")
     Optional<List<HealthCard>> getNotReservedHealthCard();
+
+    @Query("SELECT hc FROM HealthCard hc WHERE hc.pinNo = :pinNo AND hc.password = :password")
+    Optional<HealthCard> findByPinAndPassword(@Param("pinNo")Long pinNo, @Param("password")short password);
 }

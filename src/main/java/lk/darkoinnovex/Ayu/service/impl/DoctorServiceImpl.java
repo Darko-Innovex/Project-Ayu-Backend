@@ -133,17 +133,6 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public List<String> getAllSpecialityByHospital(Long hospitalId) {
-        List<String> speciality = doctorRepository.findAllSpecialties(hospitalId).orElse(null);
-
-        if (speciality != null) {
-            return speciality;
-        }
-
-        return null;
-    }
-
-    @Override
     public List<DoctorDTO> findDoctorsByHospitalAndSpeciality(Long hospitalId, String speciality) {
         List<Doctor> doctors =
                 doctorRepository.findDoctorsByHospitalAndSpeciality(hospitalId, speciality).orElse(null);

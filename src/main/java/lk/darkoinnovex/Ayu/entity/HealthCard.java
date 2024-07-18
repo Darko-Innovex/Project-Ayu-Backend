@@ -22,12 +22,16 @@ public class HealthCard {
     private Long pinNo;
 
     @Column(nullable = false)
+    private short password;
+
+    @Column(nullable = false)
     private String status = "Not Reserved";
 
     public HealthCardDTO toDto() {
         return new HealthCardDTO(
                 id,
                 pinNo,
+                password,
                 status
         );
     }

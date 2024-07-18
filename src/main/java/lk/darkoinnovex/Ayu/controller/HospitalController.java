@@ -54,4 +54,16 @@ public class HospitalController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
+    // Get all specialities of doctors
+    @GetMapping("/hospital/{id}/speciality")
+    public ResponseEntity<List<String>> getSpecialitiesByHospital(@PathVariable Long id) {
+        List<String> speciality = hospitalService.getAllSpecialityByHospital(id);
+
+        if (speciality != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(speciality);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 }
