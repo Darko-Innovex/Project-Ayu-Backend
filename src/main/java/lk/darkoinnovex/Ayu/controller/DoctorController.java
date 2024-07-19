@@ -97,10 +97,10 @@ public class DoctorController {
     }
 
     // Get all doctor by speciality and hospital
-    @GetMapping("/hospital/speciality/doctor")
+    @GetMapping("/hospital/{id}/speciality/{speciality}/doctor")
     public ResponseEntity<List<DoctorDTO>> getDoctorBySpecialityAndHospital(
-            @RequestPart("speciality") String speciality,
-            @RequestPart("hospital") Long hospital) {
+            @PathVariable("speciality") String speciality,
+            @PathVariable("id") Long hospital) {
 
         List<DoctorDTO> doctors = doctorService.findDoctorsByHospitalAndSpeciality(hospital, speciality);
 

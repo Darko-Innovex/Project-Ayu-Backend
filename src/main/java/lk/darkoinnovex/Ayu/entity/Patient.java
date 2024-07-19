@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -24,7 +25,7 @@ public class Patient {
     private String name;
 
     @Column(nullable = false)
-    private String dob;
+    private LocalDate dob;
 
     @Column(nullable = false, unique = true)
     private String nic;
