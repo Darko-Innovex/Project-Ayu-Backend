@@ -6,7 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -21,13 +22,13 @@ public class Schedule {
     private Long id;
 
     @Column(nullable = false)
-    private Timestamp date;
+    private LocalDate date;
 
     @Column(nullable = false)
-    private Timestamp inTime;
+    private LocalTime inTime;
 
     @Column(nullable = false)
-    private Timestamp outTime;
+    private LocalTime outTime;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Hospital hospital;

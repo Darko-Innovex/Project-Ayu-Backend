@@ -12,6 +12,6 @@ import java.util.Optional;
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
-    @Query("SELECT s FROM Schedule s WHERE s.doctor.id = :doctorId AND s.hospital.id = :hospitalId")
+    @Query("SELECT s FROM Schedule s WHERE s.doctor.id = :doctorId AND s.hospital.id = :hospitalId AND s.date >= CURRENT DATE")
     Optional<List<Schedule>> getScheduleOfDoctorOnHospital(@Param("doctorId") Long doctorId, @Param("hospitalId") Long hospitalId);
 }

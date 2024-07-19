@@ -110,7 +110,12 @@ public class MedicineBillServiceImpl implements MedicineBillService {
         if (medicineBill != null) {
 
 
-            return new MedicineBillDTO(medicineBill.getId(), medicineBill.getDoctor().getId(), medicineBill.getTimestamp(), getMedicineAsAList(medicineBill.getMedicine()));
+            return new MedicineBillDTO(
+                    medicineBill.getId(),
+                    medicineBill.getTimestamp(),
+                    medicineBill.getDoctor().getId(),
+                    medicineBill.getAppointment().getId(),
+                    getMedicineAsAList(medicineBill.getMedicine()));
         }
         return null;
     }
@@ -121,7 +126,13 @@ public class MedicineBillServiceImpl implements MedicineBillService {
 
         if (all != null) {
 
-            return all.stream().map(medicineBill -> new MedicineBillDTO(medicineBill.getId(), medicineBill.getDoctor().getId(), medicineBill.getTimestamp(), getMedicineAsAList(medicineBill.getMedicine()))).toList();
+            return all.stream().map(medicineBill -> new MedicineBillDTO(
+                    medicineBill.getId(),
+                    medicineBill.getTimestamp(),
+                    medicineBill.getDoctor().getId(),
+                    medicineBill.getAppointment().getId(),
+                    getMedicineAsAList(medicineBill.getMedicine())
+            )).toList();
         }
 
         return null;
@@ -133,7 +144,13 @@ public class MedicineBillServiceImpl implements MedicineBillService {
         MedicineBill medicineBill = medicineBillRepository.findMedicineBillOfAppointment(appointmentId).orElse(null);
 
         if (medicineBill != null) {
-            return new MedicineBillDTO(medicineBill.getId(), medicineBill.getDoctor().getId(), medicineBill.getTimestamp(), getMedicineAsAList(medicineBill.getMedicine()));
+            return new MedicineBillDTO(
+                    medicineBill.getId(),
+                    medicineBill.getTimestamp(),
+                    medicineBill.getDoctor().getId(),
+                    medicineBill.getAppointment().getId(),
+                    getMedicineAsAList(medicineBill.getMedicine())
+            );
         }
 
         return null;
@@ -141,31 +158,31 @@ public class MedicineBillServiceImpl implements MedicineBillService {
 
     @Override
     public List<MedicineDTO> getCurrentMedicineListOfPatient(Long patientId) {
-        Patient patient = patientRepository.findById(patientId).orElse(null);
-
-        if (patient != null) {
-            List<Medicine> medicines = medicineBillRepository.getCurrentDrugListOfPatient(patient).orElse(Collections.emptyList());
-
-            List<MedicineDTO> filteredMedicines = medicines.stream()
-                    .filter(medicine -> {
-                        LocalDateTime endDate = medicine.getTimestamp().toLocalDateTime().plusDays(medicine.getDayCount());
-
-                        return endDate.isAfter(LocalDateTime.now());
-                    })
-                    .map(medicine -> new MedicineDTO(
-                            medicine.getId(),
-                            medicine.getTimestamp(),
-                            medicine.getDayCount(),
-                            medicine.getMedicineName(),
-                            medicine.getMedicineBrand(),
-                            medicine.getMedicineWeight(),
-                            medicine.getDose(),
-                            medicine.getDosesPerDay()
-                    ))
-                    .collect(Collectors.toList());
-
-            return filteredMedicines;
-        }
+//        Patient patient = patientRepository.findById(patientId).orElse(null);
+//
+//        if (patient != null) {
+//            List<Medicine> medicines = medicineBillRepository.getCurrentDrugListOfPatient(patient).orElse(Collections.emptyList());
+//
+//            List<MedicineDTO> filteredMedicines = medicines.stream()
+//                    .filter(medicine -> {
+//                        LocalDateTime endDate = medicine.getTimestamp().toLocalDateTime().plusDays(medicine.getDayCount());
+//
+//                        return endDate.isAfter(LocalDateTime.now());
+//                    })
+//                    .map(medicine -> new MedicineDTO(
+//                            medicine.getId(),
+//                            medicine.getTimestamp(),
+//                            medicine.getDayCount(),
+//                            medicine.getMedicineName(),
+//                            medicine.getMedicineBrand(),
+//                            medicine.getMedicineWeight(),
+//                            medicine.getDose(),
+//                            medicine.getDosesPerDay()
+//                    ))
+//                    .collect(Collectors.toList());
+//
+//            return filteredMedicines;
+//        }
 
         return null;
     }
@@ -183,7 +200,15 @@ public class MedicineBillServiceImpl implements MedicineBillService {
             Medicine save = medicineRepository.save(medicine);
 
             if (save != null) {
-                return new MedicineDTO(medicine.getId(), medicine.getTimestamp(), medicine.getDayCount(), medicine.getMedicineName(), medicine.getMedicineBrand(), medicine.getMedicineWeight(), medicine.getDose(), medicine.getDosesPerDay());
+                return new MedicineDTO(
+                        medicine.getId(),
+                        medicine.getTimestamp(),
+                        medicine.getDayCount(),
+                        medicine.getMedicineName(),
+                        medicine.getMedicineBrand(),
+                        medicine.getMedicineWeight(),
+                        medicine.getDose(),
+                        medicine.getDosesPerDay());
             }
         }
 
@@ -206,8 +231,16 @@ public class MedicineBillServiceImpl implements MedicineBillService {
     }
 
     public List<MedicineDTO> getMedicineAsAList(List<Medicine> medicineList) {
-        List<MedicineDTO> list = medicineList.stream().map(medicine -> new MedicineDTO(medicine.getId(), medicine.getTimestamp(), medicine.getDayCount(), medicine.getMedicineName(), medicine.getMedicineBrand(),
-                medicine.getMedicineWeight(), medicine.getDose(), medicine.getDosesPerDay())).toList();
+        List<MedicineDTO> list = medicineList.stream().map(medicine -> new MedicineDTO(
+                medicine.getId(),
+                medicine.getTimestamp(),
+                medicine.getDayCount(),
+                medicine.getMedicineName(),
+                medicine.getMedicineBrand(),
+                medicine.getMedicineWeight(),
+                medicine.getDose(),
+                medicine.getDosesPerDay()
+        )).toList();
 
         return list;
     }

@@ -14,7 +14,8 @@ import java.util.List;
 @Setter
 public class MedicineBillDTO {
     private Long id;
-    private Long doctorId;
     private Timestamp timestamp;
+    private Long doctorId;
+    private Long appointmentId;
     private List<MedicineDTO> medicineList;
 }

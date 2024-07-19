@@ -5,7 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,11 +15,11 @@ import java.sql.Timestamp;
 public class ScheduleDTO {
     private Long id;
 
-    private Timestamp date;
+    private LocalDate date;
 
-    private Timestamp inTime;
+    private LocalTime inTime;
 
-    private Timestamp outTime;
+    private LocalTime outTime;
 
     private Long hospitalId;
 

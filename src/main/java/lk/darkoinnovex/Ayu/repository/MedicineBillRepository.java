@@ -14,13 +14,13 @@ import java.util.Optional;
 @Repository
 public interface MedicineBillRepository extends JpaRepository<MedicineBill, Long> {
 
-    @Query("select a.medicineBill from Appointment a where a.id=:appointmentId")
+    @Query("select m from MedicineBill m where m.appointment.id=:appointmentId")
     Optional<MedicineBill> findMedicineBillOfAppointment(@Param("appointmentId") Long appointmentId);
-
+/*
     @Query("SELECT m FROM Appointment a " +
             "JOIN a.medicineBill mb " +
             "JOIN mb.medicine m " +
             "WHERE a.patient = :patient ")
-    Optional<List<Medicine>> getCurrentDrugListOfPatient(@Param("patient") Patient patient);
+    Optional<List<Medicine>> getCurrentDrugListOfPatient(@Param("patient") Patient patient);*/
 
 }

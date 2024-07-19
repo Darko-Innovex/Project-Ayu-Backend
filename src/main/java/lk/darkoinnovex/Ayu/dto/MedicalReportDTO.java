@@ -16,6 +16,7 @@ public class MedicalReportDTO {
     private String file;
     private Long doctorId;
     private String reportType = "text";
+    private Long appointmentId;
 
     public MedicalReportDTO(Long id, Timestamp timestamp, String file, Long doctorId) {
         this.id = id;
