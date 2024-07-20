@@ -124,4 +124,28 @@ public class DoctorController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
+    // Remove doctor from a hospital
+    @PutMapping("/hospital/{hId}/doctor/{dId}")
+    public ResponseEntity<String> removeDoctorFromHospital(@PathVariable Long hId, @PathVariable Long dId) {
+        DoctorDTO doctorDTO = doctorService.removeDoctorFromHospital(hId, dId);
+
+        if (doctorDTO != null) {
+            return ResponseEntity.status(HttpStatus.OK).body("Doctor Removed");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    // Add doctor to a hospital
+    @PostMapping("/hospital/{hId}/doctor/{dId}")
+    public ResponseEntity<String> addDoctorToHospital(@PathVariable Long hId, @PathVariable Long dId) {
+        DoctorDTO doctorDTO = doctorService.addDoctorToHospital(hId, dId);
+
+        if (doctorDTO != null) {
+            return ResponseEntity.status(HttpStatus.OK).body("Doctor Added");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 }

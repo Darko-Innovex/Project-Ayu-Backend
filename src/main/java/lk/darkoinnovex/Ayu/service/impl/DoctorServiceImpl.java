@@ -176,4 +176,39 @@ public class DoctorServiceImpl implements DoctorService {
 
         return null;
     }
+
+    @Override
+    public DoctorDTO removeDoctorFromHospital(Long dId, Long hId) {
+
+        DoctorList doctorList = doctorListRepository.selectByDoctorIdAndHospitalId(dId, hId).orElse(null);
+
+        if (doctorList != null) {
+            doctorListRepository.delete(doctorList);
+            return new DoctorDTO();
+        }
+
+        return null;
+    }
+
+    @Override
+    public DoctorDTO addDoctorToHospital(Long dId, Long hId) {
+
+        Doctor doctor = doctorRepository.findById(dId).orElse(null);
+        Hospital hospital = hospitalRepository.findById(hId).orElse(null);
+
+        if (doctor != null && hospital != null) {
+            DoctorList doctorList = new DoctorList();
+
+            doctorList.setDoctor(doctor);
+            doctorList.setHospital(hospital);
+
+            DoctorList save = doctorListRepository.save(doctorList);
+
+            if (save != null) {
+                return new DoctorDTO();
+            }
+        }
+
+        return null;
+    }
 }

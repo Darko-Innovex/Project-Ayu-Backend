@@ -10,18 +10,13 @@ import java.util.List;
 public interface DoctorService {
 
     List<DoctorDTO> getAllDoctors();
-
     DoctorDTO createDoctor(DoctorDTO dto, Long id);
-
     DoctorDTO updateDoctor(DoctorDTO dto);
-
     DoctorDTO getDoctorById(Long id);
-
     List<DoctorDTO> getDoctorsOfPatient(Long id);
-
     DoctorDTO configDoctorSignIn(SignInDTO dto);
-
     List<DoctorDTO> findDoctorsByHospitalAndSpeciality(Long hospitalId, String speciality);
-
     List<DoctorDTO> getDoctorListOfHospital(Long hospitalId, Integer page, Integer count);
+    DoctorDTO removeDoctorFromHospital(Long dId, Long hId);
+    DoctorDTO addDoctorToHospital(Long dId, Long hId);
 }
