@@ -44,12 +44,10 @@ public class AppointmentServiceImpl implements AppointmentService {
     public AppointmentDTO createAppointment(AppointmentDTO appointmentDTO) {
         Doctor doctor = doctorRepository.findById(appointmentDTO.getDoctorId()).orElse(null);
         Hospital hospital = hospitalRepository.findById(appointmentDTO.getHospitalId()).orElse(null);
-        MedicalReport medicalReport = medicalReportRepository.findById(appointmentDTO.getMedicalReportId()).orElse(null);
-        MedicineBill medicineBill = medicineBillRepository.findById(appointmentDTO.getMedicineBillId()).orElse(null);
         Patient patient = patientRepository.findById(appointmentDTO.getPatientId()).orElse(null);
         Schedule schedule = scheduleRepository.findById(appointmentDTO.getScheduleId()).orElse(null);
 
-        if (doctor != null || hospital != null || medicalReport != null || medicineBill != null || patient != null || schedule != null) {
+        if (doctor != null || hospital != null || patient != null || schedule != null) {
 
             Appointment appointment = new Appointment();
 
@@ -57,8 +55,6 @@ public class AppointmentServiceImpl implements AppointmentService {
             appointment.setTimestamp(appointmentDTO.getTimestamp());
             appointment.setDoctor(doctor);
             appointment.setHospital(hospital);
-            appointment.setMedicalReport(medicalReport);
-            appointment.setMedicineBill(medicineBill);
             appointment.setPatient(patient);
             appointment.setSchedule(schedule);
 
@@ -72,9 +68,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                     savedAppointment.getPatient().getId(),
                     savedAppointment.getDoctor().getId(),
                     savedAppointment.getHospital().getId(),
-                    savedAppointment.getSchedule().getId(),
-                    savedAppointment.getMedicalReport().getId(),
-                    savedAppointment.getMedicineBill().getId()
+                    savedAppointment.getSchedule().getId()
             );
         }
         return null;
@@ -97,9 +91,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                     save.getPatient().getId(),
                     save.getDoctor().getId(),
                     save.getHospital().getId(),
-                    save.getSchedule().getId(),
-                    save.getMedicalReport().getId(),
-                    save.getMedicineBill().getId()
+                    save.getSchedule().getId()
             );
 
         }
@@ -118,8 +110,6 @@ public class AppointmentServiceImpl implements AppointmentService {
                     appointment.getDoctor().getId(),
                     appointment.getHospital().getId(),
                     appointment.getSchedule().getId(),
-                    appointment.getMedicalReport().getId(),
-                    appointment.getMedicineBill().getId(),
                     appointment.getPatient().getId());
         }
         return null;
@@ -144,9 +134,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                             appointment.getPatient().getId(),
                             appointment.getDoctor().getId(),
                             appointment.getHospital().getId(),
-                            appointment.getSchedule().getId(),
-                            appointment.getMedicalReport().getId(),
-                            appointment.getMedicineBill().getId()
+                            appointment.getSchedule().getId()
                     )).collect(Collectors.toList());
 
             if (!dtos.isEmpty()) {
@@ -214,9 +202,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                             appointment.getPatient().getId(),
                             appointment.getDoctor().getId(),
                             appointment.getHospital().getId(),
-                            appointment.getSchedule().getId(),
-                            appointment.getMedicalReport().getId(),
-                            appointment.getMedicineBill().getId()
+                            appointment.getSchedule().getId()
                     )).collect(Collectors.toList());
 
             if (!dtos.isEmpty()) {
@@ -247,9 +233,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                             appointment.getPatient().getId(),
                             appointment.getDoctor().getId(),
                             appointment.getHospital().getId(),
-                            appointment.getSchedule().getId(),
-                            appointment.getMedicalReport().getId(),
-                            appointment.getMedicineBill().getId()
+                            appointment.getSchedule().getId()
                     )).collect(Collectors.toList());
 
             if (!dtos.isEmpty()) {

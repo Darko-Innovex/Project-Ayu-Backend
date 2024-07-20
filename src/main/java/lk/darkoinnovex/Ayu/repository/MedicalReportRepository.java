@@ -13,9 +13,9 @@ import java.util.Optional;
 @Repository
 public interface MedicalReportRepository extends JpaRepository<MedicalReport, Long> {
 
-    @Query("select a.medicalReport from Appointment a WHERE a.id=:id")
+    @Query("select m from MedicalReport m WHERE m.appointment.id=:id")
     Optional<MedicalReport> findByAppoinmentId(@Param("id") Long id);
 
-    @Query("select a.medicalReport from Appointment a WHERE a.patient=:patient")
+    @Query("select m from MedicalReport m WHERE m.appointment.patient=:patient")
     List<MedicalReport> findByPatientId(@Param("patient") Patient patient);
 }

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 
@@ -22,6 +23,7 @@ public class Appointment {
     @Column(nullable = false)
     private int appointmentNo;
 
+    @CreationTimestamp
     @Column(nullable = false)
     private Timestamp timestamp;
 
@@ -39,12 +41,4 @@ public class Appointment {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Schedule schedule;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "medical_report_id")
-    private MedicalReport medicalReport;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "medical_bill_id")
-    private MedicineBill medicineBill;
 }
