@@ -2,6 +2,8 @@ package lk.darkoinnovex.Ayu.repository;
 
 import lk.darkoinnovex.Ayu.entity.Doctor;
 import lk.darkoinnovex.Ayu.entity.Patient;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,4 +27,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
             "AND d.speciality = :speciality")
     Optional<List<Doctor>> findDoctorsByHospitalAndSpeciality(
             @Param("hospitalId") Long hospitalId, @Param("speciality") String speciality);
+
+    @Query("SELECT dl.doctor FROM DoctorList dl WHERE dl.hospital.id = : hospitalId")
+    Page<Doctor> getDoctorListOfHospital(@Param("hospitalId") Long hospitalId, Pageable pageable);
 }

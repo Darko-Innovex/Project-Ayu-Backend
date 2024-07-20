@@ -11,5 +11,7 @@ public interface ScheduleService {
     ScheduleDTO saveSchedule(ScheduleDTO scheduleDTO);
     ScheduleDTO updateSchedule(ScheduleDTO scheduleDTO);
     ScheduleDTO deleteSchedule(Long id);
-    List<ScheduleDTO> getScheduleOfDoctorOnHospital(Long doctorId, Long hospitalId);
+    List<ScheduleDTO> getScheduleOfDoctorOnHospital(Long doctorId, Long hospitalId, Integer page, Integer count);
+    List<ScheduleDTO> getScheduleOfHospital(Long hospitalId, Integer page, Integer count);
+    ScheduleDTO updateScheduleStatus(Long scheduleId);
 }

@@ -9,6 +9,9 @@ import lk.darkoinnovex.Ayu.repository.HospitalRepository;
 import lk.darkoinnovex.Ayu.repository.ScheduleRepository;
 import lk.darkoinnovex.Ayu.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,6 +39,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             dto.setDate(schedule.getDate());
             dto.setInTime(schedule.getInTime());
             dto.setOutTime(schedule.getOutTime());
+            dto.setStatus(schedule.getStatus());
             dto.setHospitalId(schedule.getHospital().getId());
             dto.setDoctorId(schedule.getDoctor().getId());
 
@@ -101,18 +105,67 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public List<ScheduleDTO> getScheduleOfDoctorOnHospital(Long doctorId, Long hospitalId) {
-        List<Schedule> schedules = scheduleRepository.getScheduleOfDoctorOnHospital(doctorId, hospitalId).orElse(null);
+    public List<ScheduleDTO> getScheduleOfDoctorOnHospital(Long doctorId, Long hospitalId, Integer page, Integer count) {
 
-        if (schedules != null) {
+        Pageable pageable = PageRequest.of(page, count);
+
+        Page<Schedule> schedules = scheduleRepository.getScheduleOfDoctorOnHospital(doctorId, hospitalId, pageable);
+
+        if (!schedules.isEmpty()) {
             return schedules.stream().map(schedule -> new ScheduleDTO(
                     schedule.getId(),
                     schedule.getDate(),
                     schedule.getInTime(),
                     schedule.getOutTime(),
+                    schedule.getStatus(),
                     schedule.getHospital().getId(),
                     schedule.getDoctor().getId()
             )).toList();
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<ScheduleDTO> getScheduleOfHospital(Long hospitalId, Integer page, Integer count) {
+        Pageable pageable = PageRequest.of(page, count);
+
+        Page<Schedule> schedules = scheduleRepository.getScheduleOfHospital(hospitalId, pageable);
+
+        if (!schedules.isEmpty()) {
+            return schedules.stream().map(schedule -> new ScheduleDTO(
+                    schedule.getId(),
+                    schedule.getDate(),
+                    schedule.getInTime(),
+                    schedule.getOutTime(),
+                    schedule.getStatus(),
+                    schedule.getHospital().getId(),
+                    schedule.getDoctor().getId()
+            )).toList();
+        }
+
+        return null;
+    }
+
+    @Override
+    public ScheduleDTO updateScheduleStatus(Long scheduleId) {
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElse(null);
+
+        if (schedule != null) {
+            schedule.setStatus("Canceled");
+            Schedule save = scheduleRepository.save(schedule);
+
+            if (save != null) {
+                return new ScheduleDTO(
+                        save.getId(),
+                        save.getDate(),
+                        save.getInTime(),
+                        save.getOutTime(),
+                        save.getStatus(),
+                        save.getHospital().getId(),
+                        save.getDoctor().getId()
+                );
+            }
         }
 
         return null;

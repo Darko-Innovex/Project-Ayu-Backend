@@ -30,6 +30,9 @@ public class Schedule {
     @Column(nullable = false)
     private LocalTime outTime;
 
+    @Column(nullable = false)
+    private String status = "Pending";
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Hospital hospital;
 

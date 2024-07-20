@@ -33,4 +33,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             @Param("startDate") Timestamp startDate,
             @Param("endDate") Timestamp endDate,
             Pageable pageable);
+
+    @Query("select a from Appointment a WHERE a.hospital.id=:hospitalId ORDER BY a.id DESC")
+    Page<Appointment> findByHospitalId(@Param("hospitalId") Long hId, Pageable pageable);
 }

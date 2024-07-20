@@ -110,4 +110,42 @@ public class DoctorController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
+    // Get doctor list of a specific hospital
+    @GetMapping("/hospital/{id}/doctor")
+    public ResponseEntity<List<DoctorDTO>> getDoctorListOfHospital(
+            @PathVariable Long id, @RequestParam("page") Integer page, @RequestParam("count") Integer count) {
+
+        List<DoctorDTO> list = doctorService.getDoctorListOfHospital(id, page, count);
+
+        if (list != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    // Remove doctor from a hospital
+    @PutMapping("/hospital/{hId}/doctor/{dId}")
+    public ResponseEntity<String> removeDoctorFromHospital(@PathVariable Long hId, @PathVariable Long dId) {
+        DoctorDTO doctorDTO = doctorService.removeDoctorFromHospital(hId, dId);
+
+        if (doctorDTO != null) {
+            return ResponseEntity.status(HttpStatus.OK).body("Doctor Removed");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    // Add doctor to a hospital
+    @PostMapping("/hospital/{hId}/doctor/{dId}")
+    public ResponseEntity<String> addDoctorToHospital(@PathVariable Long hId, @PathVariable Long dId) {
+        DoctorDTO doctorDTO = doctorService.addDoctorToHospital(hId, dId);
+
+        if (doctorDTO != null) {
+            return ResponseEntity.status(HttpStatus.OK).body("Doctor Added");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 }

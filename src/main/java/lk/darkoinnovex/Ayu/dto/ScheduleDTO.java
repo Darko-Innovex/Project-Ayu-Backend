@@ -21,6 +21,8 @@ public class ScheduleDTO {
 
     private LocalTime outTime;
 
+    private String status;
+
     private Long hospitalId;
 
     private Long doctorId;
