@@ -23,4 +23,6 @@ public interface PatientService {
     PatientDTO getPatientByHealthCard(Long pin);
 
     PatientDTO configPatientSignIn(SignInDTO dto);
+
+    List<PatientDTO> getPatientSavedByHospital(Long id, Integer page, Integer count);
 }

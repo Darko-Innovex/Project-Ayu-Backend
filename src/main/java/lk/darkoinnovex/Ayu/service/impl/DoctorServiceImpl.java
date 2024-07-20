@@ -9,6 +9,9 @@ import lk.darkoinnovex.Ayu.entity.Patient;
 import lk.darkoinnovex.Ayu.repository.*;
 import lk.darkoinnovex.Ayu.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -148,6 +151,27 @@ public class DoctorServiceImpl implements DoctorService {
                             doctor.getMobile(),
                             doctor.getPhoto()
                     )).toList();
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<DoctorDTO> getDoctorListOfHospital(Long hospitalId, Integer page, Integer count) {
+        Pageable pageable = PageRequest.of(page, count);
+
+        Page<Doctor> doctors = doctorRepository.getDoctorListOfHospital(hospitalId, pageable);
+
+        if (!doctors.isEmpty()) {
+            return doctors.stream().map(doctor -> new DoctorDTO(
+                    doctor.getId(),
+                    doctor.getNic(),
+                    doctor.getName(),
+                    doctor.getSpeciality(),
+                    doctor.getEmail(),
+                    doctor.getMobile(),
+                    doctor.getPhoto()
+            )).toList();
         }
 
         return null;

@@ -18,7 +18,7 @@ public class HospitalController {
 
     // Find hospital by id
     @GetMapping("/hospital/{id}")
-    public ResponseEntity<HospitalDTO> getDoctorById(@PathVariable Long id) {
+    public ResponseEntity<HospitalDTO> getHospitalById(@PathVariable Long id) {
 
         HospitalDTO dto = hospitalService.getHospitalById(id);
 

@@ -110,4 +110,16 @@ public class PatientController {
         return ResponseEntity.status(HttpStatus.OK).body(json);
     }
 
+    @GetMapping("/hospital/{id}/patient")
+    public ResponseEntity<List<PatientDTO>> getPatientSavedByHospital(
+            @PathVariable Long id, @RequestParam("page") Integer page, @RequestParam("count") Integer count) {
+
+        List<PatientDTO> dtos = patientService.getPatientSavedByHospital(id, page, count);
+
+        if (dtos != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(dtos);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 }

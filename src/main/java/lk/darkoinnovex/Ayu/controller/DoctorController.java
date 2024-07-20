@@ -110,4 +110,18 @@ public class DoctorController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
+    // Get doctor list of a specific hospital
+    @GetMapping("/hospital/{id}/doctor")
+    public ResponseEntity<List<DoctorDTO>> getDoctorListOfHospital(
+            @PathVariable Long id, @RequestParam("page") Integer page, @RequestParam("count") Integer count) {
+
+        List<DoctorDTO> list = doctorService.getDoctorListOfHospital(id, page, count);
+
+        if (list != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 }

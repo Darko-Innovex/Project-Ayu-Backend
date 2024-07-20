@@ -11,6 +11,9 @@ import lk.darkoinnovex.Ayu.repository.HospitalRepository;
 import lk.darkoinnovex.Ayu.repository.PatientRepository;
 import lk.darkoinnovex.Ayu.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -42,15 +45,20 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientDTO createPatient(PatientDTO patientDTO) {
 
-
+        HealthCard healthCard = null;
         Hospital hospital = null;
 
         if (patientDTO.getHospitalId() != null) {
             hospital = hospitalRepository.findById(patientDTO.getHospitalId()).orElse(null);
         }
 
+        if (patientDTO.getHealthCardPin() != null) {
+            healthCard = healthCardRepository.findByPin(patientDTO.getHealthCardPin()).orElse(null);
+        }
+
         Patient patient = patientDTO.toEntity();
         patient.setHospital(hospital);
+        patient.setHealthCard(healthCard);
 
         Patient savedPatient = patientRepository.save(patient);
 
@@ -131,6 +139,25 @@ public class PatientServiceImpl implements PatientService {
 
         if (patient != null) {
             return patient.toDto();
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<PatientDTO> getPatientSavedByHospital(Long id, Integer page, Integer count) {
+        Pageable pageable = PageRequest.of(page, count);
+
+        Page<Patient> patients = patientRepository.getPatientSavedByHospital(id, pageable);
+
+        if (!patients.isEmpty()) {
+            List<PatientDTO> patientDTOS = new ArrayList<>();
+
+            patients.forEach(patient -> {
+                patientDTOS.add(patient.toDto());
+            });
+
+            return patientDTOS;
         }
 
         return null;
