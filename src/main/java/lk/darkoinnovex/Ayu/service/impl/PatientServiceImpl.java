@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,7 @@ public class PatientServiceImpl implements PatientService {
         return patientDTOS;
     }
 
+    @Transactional
     @Override
     public PatientDTO createPatient(PatientDTO patientDTO) {
 
@@ -53,7 +55,11 @@ public class PatientServiceImpl implements PatientService {
         }
 
         if (patientDTO.getHealthCardPin() != null) {
-            healthCard = healthCardRepository.findByPin(patientDTO.getHealthCardPin()).orElse(null);
+            HealthCard card = healthCardRepository.findByPin(patientDTO.getHealthCardPin()).orElse(null);
+
+            if (card != null && card.getStatus().equals("Pending")) {
+                healthCard = card;
+            }
         }
 
         Patient patient = patientDTO.toEntity();
@@ -63,7 +69,14 @@ public class PatientServiceImpl implements PatientService {
         Patient savedPatient = patientRepository.save(patient);
 
         if (savedPatient != null) {
-            return savedPatient.toDto();
+
+            healthCard.setStatus("Connected");
+
+            HealthCard save = healthCardRepository.save(healthCard);
+
+            if (save != null) {
+                return savedPatient.toDto();
+            }
         }
 
         return null;
@@ -158,6 +171,43 @@ public class PatientServiceImpl implements PatientService {
             });
 
             return patientDTOS;
+        }
+
+        return null;
+    }
+
+    @Override
+    public PatientDTO getPatientByNic(String nic) {
+        Patient patient = patientRepository.getPatientByNic(nic).orElse(null);
+
+        if (patient != null) {
+            return patient.toDto();
+        }
+
+        return null;
+    }
+
+    @Transactional
+    @Override
+    public PatientDTO addHealthCardToPatient(Long pId, Long index) {
+
+        Patient patient = patientRepository.findById(pId).orElse(null);
+
+        if (patient != null && patient.getHealthCard() != null) {
+
+            HealthCard healthCard = healthCardRepository.findByPin(index).orElse(null);
+
+            if (healthCard != null && healthCard.getStatus().equals("Pending")) {
+                patient.setHealthCard(healthCard);
+                Patient save = patientRepository.save(patient);
+
+                if (save != null) {
+                    healthCard.setStatus("Connected");
+                    healthCardRepository.save(healthCard);
+
+                    return save.toDto();
+                }
+            }
         }
 
         return null;

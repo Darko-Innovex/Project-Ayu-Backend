@@ -242,4 +242,26 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
         return null;
     }
+
+    @Override
+    public List<AppointmentDTO> getAppointmentOfHospital(Long id, Integer page, Integer count) {
+        Pageable pageable = PageRequest.of(page, count);
+
+        Page<Appointment> appointments = appointmentRepository.findByHospitalId(id, pageable);
+
+        if (!appointments.isEmpty()) {
+            return appointments.stream().map(appointment -> new AppointmentDTO(
+                    appointment.getId(),
+                    appointment.getAppointmentNo(),
+                    appointment.getTimestamp(),
+                    appointment.getStatus(),
+                    appointment.getPatient().getId(),
+                    appointment.getDoctor().getId(),
+                    appointment.getHospital().getId(),
+                    appointment.getSchedule().getId()
+            )).toList();
+        }
+
+        return null;
+    }
 }

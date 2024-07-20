@@ -17,5 +17,5 @@ public interface AppointmentService {
     Integer getAppointmentCountOfPatient(Long id);
     List<AppointmentDTO> getAllAppointmentOfPatientOnDate(Long pId, LocalDate date, Integer page, Integer count);
     List<AppointmentDTO> findAppointmentsByPatientIdAndDateRange(Long pId, LocalDate startDate, LocalDate endDate, Integer page, Integer count);
-    /*List<AppointmentDTO> getAllAppointments();*/
+    List<AppointmentDTO> getAppointmentOfHospital(Long id, Integer page, Integer count);
 }

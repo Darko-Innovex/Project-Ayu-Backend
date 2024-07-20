@@ -25,7 +25,7 @@ public class HealthCard {
     private short password;
 
     @Column(nullable = false)
-    private String status = "Not Reserved";
+    private String status = "Pending";
 
     public HealthCardDTO toDto() {
         return new HealthCardDTO(

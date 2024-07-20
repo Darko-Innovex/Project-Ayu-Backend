@@ -94,6 +94,7 @@ public class PatientController {
         }
     }
 
+    // Get dashboard data of a patient
     @GetMapping("/patient/dashboard_data/{id}")
     public ResponseEntity<ObjectNode> getPatientDashboardData(@PathVariable Long id) {
 
@@ -110,6 +111,7 @@ public class PatientController {
         return ResponseEntity.status(HttpStatus.OK).body(json);
     }
 
+    // Get all patients saved by a specific hospital
     @GetMapping("/hospital/{id}/patient")
     public ResponseEntity<List<PatientDTO>> getPatientSavedByHospital(
             @PathVariable Long id, @RequestParam("page") Integer page, @RequestParam("count") Integer count) {
@@ -118,6 +120,30 @@ public class PatientController {
 
         if (dtos != null) {
             return ResponseEntity.status(HttpStatus.OK).body(dtos);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @GetMapping("/patient/nic/{nic}")
+    public ResponseEntity<PatientDTO> getPatientByNic(@PathVariable String nic) {
+        PatientDTO dto = patientService.getPatientByNic(nic);
+
+        if (dto != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(dto);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @PutMapping("/patient/health-card")
+    public ResponseEntity<String> updatePatientHealthCard(
+            @RequestParam("patientId") Long pId, @RequestParam("indexNo") Long index) {
+
+        PatientDTO patientDTO = patientService.addHealthCardToPatient(pId, index);
+
+        if (patientDTO != null) {
+            return ResponseEntity.status(HttpStatus.OK).body("Card Reserved");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }

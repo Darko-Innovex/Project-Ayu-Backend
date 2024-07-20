@@ -110,4 +110,17 @@ public class AppointmentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
+    @GetMapping("/hospital/{id}/appointment")
+    public ResponseEntity<List<AppointmentDTO>> getAppointmentOfHospital(
+            @PathVariable Long id, @RequestParam("page") Integer page, @RequestParam("count") Integer count) {
+
+        List<AppointmentDTO> dtos = appointmentService.getAppointmentOfHospital(id, page, count);
+
+        if (dtos != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(dtos);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 }

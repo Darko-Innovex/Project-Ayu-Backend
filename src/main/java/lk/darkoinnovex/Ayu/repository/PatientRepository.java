@@ -27,4 +27,7 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
 
     @Query("SELECT p FROM Patient p WHERE p.hospital.id=:hospitalId")
     Page<Patient> getPatientSavedByHospital(@Param("hospitalId") Long hospitalId, Pageable pageable);
+
+    @Query("SELECT p FROM Patient p WHERE p.nic = :nic")
+    Optional<Patient> getPatientByNic(@Param("nic") String nic);
 }
