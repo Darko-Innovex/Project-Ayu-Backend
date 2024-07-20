@@ -158,31 +158,31 @@ public class MedicineBillServiceImpl implements MedicineBillService {
 
     @Override
     public List<MedicineDTO> getCurrentMedicineListOfPatient(Long patientId) {
-//        Patient patient = patientRepository.findById(patientId).orElse(null);
-//
-//        if (patient != null) {
-//            List<Medicine> medicines = medicineBillRepository.getCurrentDrugListOfPatient(patient).orElse(Collections.emptyList());
-//
-//            List<MedicineDTO> filteredMedicines = medicines.stream()
-//                    .filter(medicine -> {
-//                        LocalDateTime endDate = medicine.getTimestamp().toLocalDateTime().plusDays(medicine.getDayCount());
-//
-//                        return endDate.isAfter(LocalDateTime.now());
-//                    })
-//                    .map(medicine -> new MedicineDTO(
-//                            medicine.getId(),
-//                            medicine.getTimestamp(),
-//                            medicine.getDayCount(),
-//                            medicine.getMedicineName(),
-//                            medicine.getMedicineBrand(),
-//                            medicine.getMedicineWeight(),
-//                            medicine.getDose(),
-//                            medicine.getDosesPerDay()
-//                    ))
-//                    .collect(Collectors.toList());
-//
-//            return filteredMedicines;
-//        }
+        Patient patient = patientRepository.findById(patientId).orElse(null);
+
+        if (patient != null) {
+            List<Medicine> medicines = medicineBillRepository.getCurrentDrugListOfPatient(patient).orElse(Collections.emptyList());
+
+            List<MedicineDTO> filteredMedicines = medicines.stream()
+                    .filter(medicine -> {
+                        LocalDateTime endDate = medicine.getTimestamp().toLocalDateTime().plusDays(medicine.getDayCount());
+
+                        return endDate.isAfter(LocalDateTime.now());
+                    })
+                    .map(medicine -> new MedicineDTO(
+                            medicine.getId(),
+                            medicine.getTimestamp(),
+                            medicine.getDayCount(),
+                            medicine.getMedicineName(),
+                            medicine.getMedicineBrand(),
+                            medicine.getMedicineWeight(),
+                            medicine.getDose(),
+                            medicine.getDosesPerDay()
+                    ))
+                    .collect(Collectors.toList());
+
+            return filteredMedicines;
+        }
 
         return null;
     }
