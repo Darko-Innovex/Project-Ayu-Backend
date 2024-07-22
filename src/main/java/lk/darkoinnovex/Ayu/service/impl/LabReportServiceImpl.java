@@ -1,8 +1,10 @@
 package lk.darkoinnovex.Ayu.service.impl;
 
 import lk.darkoinnovex.Ayu.dto.LabReportDTO;
+import lk.darkoinnovex.Ayu.entity.Hospital;
 import lk.darkoinnovex.Ayu.entity.LabReport;
 import lk.darkoinnovex.Ayu.entity.Patient;
+import lk.darkoinnovex.Ayu.repository.HospitalRepository;
 import lk.darkoinnovex.Ayu.repository.LabReportRepository;
 import lk.darkoinnovex.Ayu.repository.PatientRepository;
 import lk.darkoinnovex.Ayu.service.LabReportService;
@@ -26,6 +28,8 @@ public class LabReportServiceImpl implements LabReportService {
 
     @Autowired
     private PatientRepository patientRepository;
+    @Autowired
+    private HospitalRepository hospitalRepository;
 
     @Override
     public List<LabReportDTO> getAllLabReports() {
@@ -171,6 +175,17 @@ public class LabReportServiceImpl implements LabReportService {
                 return dtos;
             }
         }
+        return null;
+    }
+
+    @Override
+    public List<LabReportDTO> getLabReportsOfHospital(Long id) {
+        Hospital hospital = hospitalRepository.findById(id).orElse(null);
+
+        if (hospital != null) {
+//            return labReportRepository.countLabReportOfHospital(hospital).orElse(null);
+        }
+
         return null;
     }
 }

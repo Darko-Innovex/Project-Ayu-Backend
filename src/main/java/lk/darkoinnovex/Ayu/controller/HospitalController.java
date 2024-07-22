@@ -1,8 +1,13 @@
 package lk.darkoinnovex.Ayu.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lk.darkoinnovex.Ayu.dto.HospitalDTO;
+import lk.darkoinnovex.Ayu.service.AppointmentService;
 import lk.darkoinnovex.Ayu.service.HospitalService;
+import lk.darkoinnovex.Ayu.service.LabReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +21,16 @@ public class HospitalController {
     @Autowired
     private HospitalService hospitalService;
 
+    @Autowired
+    @Qualifier("appointmentServiceImpl")
+    private AppointmentService appointmentService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
     // Find hospital by id
     @GetMapping("/hospital/{id}")
     public ResponseEntity<HospitalDTO> getHospitalById(@PathVariable Long id) {
-
         HospitalDTO dto = hospitalService.getHospitalById(id);
 
         if (dto != null) {
@@ -32,7 +43,6 @@ public class HospitalController {
     // Find all hospital locations
     @GetMapping("/hospital/location")
     public ResponseEntity<List<String>> getAllHospitalsLocation() {
-
         List<String> locations = hospitalService.getAllHospitalsLocations();
 
         if (locations != null) {
@@ -45,7 +55,6 @@ public class HospitalController {
     // Find all hospitals in a location
     @GetMapping("/location/hospital")
     public ResponseEntity<List<HospitalDTO>> getAllHospitalByLocation(@RequestParam String location) {
-
         List<HospitalDTO> hospitals = hospitalService.getAllHospitalByLocation(location);
 
         if (hospitals != null) {
@@ -65,5 +74,19 @@ public class HospitalController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+    }
+
+    // Get dashboard data of a patient
+    @GetMapping("/hospital/dashboard_data/{id}")
+    public ResponseEntity<ObjectNode> getPatientDashboardData(@PathVariable Long id) {
+        Integer completedAppointment = appointmentService.getCompletedAppointmentCountOfHospital(id);
+        Integer pendingAppointment = appointmentService.getPendingAppointmentCountOfHospital(id);
+//        Integer labReportsCount = LabReportService.getLabReportsCountOfHospital(id);
+
+        ObjectNode json = objectMapper.createObjectNode();
+        json.put("completedAppointment", completedAppointment);
+        json.put("pendingAppointment", pendingAppointment);
+
+        return ResponseEntity.status(HttpStatus.OK).body(json);
     }
 }

@@ -18,4 +18,6 @@ public interface AppointmentService {
     List<AppointmentDTO> getAllAppointmentOfPatientOnDate(Long pId, LocalDate date, Integer page, Integer count);
     List<AppointmentDTO> findAppointmentsByPatientIdAndDateRange(Long pId, LocalDate startDate, LocalDate endDate, Integer page, Integer count);
     List<AppointmentDTO> getAppointmentOfHospital(Long id, Integer page, Integer count);
+    Integer getCompletedAppointmentCountOfHospital(Long id);
+    Integer getPendingAppointmentCountOfHospital(Long id);
 }
