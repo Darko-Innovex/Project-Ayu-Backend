@@ -24,4 +24,6 @@ public interface LabReportService {
     List<LabReportDTO> getAllLabReportsOfPatientOnDate(Long pId, LocalDate date, Integer page, Integer count);
 
     List<LabReportDTO> findLabReportsByPatientIdAndDateRange(Long pId, LocalDate startDate, LocalDate endDate, Integer page, Integer count);
+
+    List<LabReportDTO> getLabReportsOfHospital(Long id);
 }
