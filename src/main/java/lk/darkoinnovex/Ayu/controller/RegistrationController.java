@@ -25,6 +25,5 @@ public class RegistrationController {
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Patient not created");
         }
-
     }
 }

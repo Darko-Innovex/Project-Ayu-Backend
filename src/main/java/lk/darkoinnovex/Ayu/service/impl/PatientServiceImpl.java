@@ -132,8 +132,8 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public PatientDTO getPatientByHealthCard(Long pin) {
-        HealthCard healthCard = healthCardRepository.findByPin(pin).orElse(null);
+    public PatientDTO getPatientByHealthCard(Long pin, short password) {
+        HealthCard healthCard = healthCardRepository.findByPinAndPassword(pin, password).orElse(null);
 
         if (healthCard != null) {
             Patient patient = patientRepository.getPatientByHealthCard(healthCard).orElse(null);
