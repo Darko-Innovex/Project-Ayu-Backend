@@ -28,28 +28,42 @@ public class LabReportServiceImpl implements LabReportService {
 
     @Autowired
     private PatientRepository patientRepository;
+
     @Autowired
     private HospitalRepository hospitalRepository;
 
     @Override
     public List<LabReportDTO> getAllLabReports() {
         List<LabReport> reports = labReportRepository.findAll();
-        return reports.stream().map(labReport -> new LabReportDTO(labReport.getId(), labReport.getType(), labReport.getTimestamp(), labReport.getFile(), labReport.getPatient().getId())).toList();
+        return reports.stream().map(labReport -> new LabReportDTO(
+                labReport.getId(),
+                labReport.getType(),
+                labReport.getTimestamp(),
+                labReport.getFile(),
+                labReport.getPatient().getId(),
+                labReport.getHospital().getId())).toList();
     }
 
     @Override
     public LabReportDTO createLabReport(LabReportDTO dto) {
         Patient patient =patientRepository.findById(dto.getPatientId()).orElse(null);
+        Hospital hospital = hospitalRepository.findById(dto.getHospitalId()).orElse(null);
 
-        if (patient != null) {
+        if (patient != null && hospital != null) {
             LabReport labReport = new LabReport();
             labReport.setType(dto.getType());
-            labReport.setTimestamp(dto.getTimestamp());
             labReport.setFile(dto.getFile());
             labReport.setPatient(patient);
+            labReport.setHospital(hospital);
 
             LabReport savedLabReport = labReportRepository.save(labReport);
-            return new LabReportDTO(savedLabReport.getId(), savedLabReport.getType(), savedLabReport.getTimestamp(), savedLabReport.getFile(), savedLabReport.getPatient().getId());
+            return new LabReportDTO(
+                    savedLabReport.getId(),
+                    savedLabReport.getType(),
+                    savedLabReport.getTimestamp(),
+                    savedLabReport.getFile(),
+                    savedLabReport.getPatient().getId(),
+                    savedLabReport.getHospital().getId());
         }
         return null;
     }
@@ -57,16 +71,24 @@ public class LabReportServiceImpl implements LabReportService {
     @Override
     public LabReportDTO updateLabReport(LabReportDTO dto) {
         Patient patient = patientRepository.findById(dto.getPatientId()).orElse(null);
+        Hospital hospital = hospitalRepository.findById(dto.getHospitalId()).orElse(null);
 
-        if (patient != null) {
+        if (patient != null && hospital != null) {
             LabReport labReport = new LabReport();
             labReport.setType(dto.getType());
             labReport.setTimestamp(dto.getTimestamp());
             labReport.setFile(dto.getFile());
             labReport.setPatient(patient);
+            labReport.setHospital(hospital);
 
             LabReport savedLabReport = labReportRepository.save(labReport);
-            return new LabReportDTO(savedLabReport.getId(), savedLabReport.getType(), savedLabReport.getTimestamp(), savedLabReport.getFile(), savedLabReport.getPatient().getId());
+            return new LabReportDTO(
+                    savedLabReport.getId(),
+                    savedLabReport.getType(),
+                    savedLabReport.getTimestamp(),
+                    savedLabReport.getFile(),
+                    savedLabReport.getPatient().getId(),
+                    savedLabReport.getHospital().getId());
         }
         return null;
     }
@@ -75,7 +97,13 @@ public class LabReportServiceImpl implements LabReportService {
     public LabReportDTO getLabReportById(Long id) {
         LabReport labReport = labReportRepository.findById(id).orElse(null);
         if (labReport != null) {
-            return new LabReportDTO(labReport.getId(), labReport.getType(), labReport.getTimestamp(), labReport.getFile(), labReport.getPatient().getId());
+            return new LabReportDTO(
+                    labReport.getId(),
+                    labReport.getType(),
+                    labReport.getTimestamp(),
+                    labReport.getFile(),
+                    labReport.getPatient().getId(),
+                    labReport.getHospital().getId());
         }
         return null;
     }
@@ -97,7 +125,8 @@ public class LabReportServiceImpl implements LabReportService {
                             labReport.getType(),
                             labReport.getTimestamp(),
                             labReport.getFile(),
-                            labReport.getPatient().getId()
+                            labReport.getPatient().getId(),
+                            labReport.getHospital().getId()
                     )
             ).toList();
 
@@ -140,7 +169,8 @@ public class LabReportServiceImpl implements LabReportService {
                             labReport.getType(),
                             labReport.getTimestamp(),
                             labReport.getFile(),
-                            labReport.getPatient().getId()
+                            labReport.getPatient().getId(),
+                            labReport.getHospital().getId()
                     )).collect(Collectors.toList());
 
             if (!dtos.isEmpty()) {
@@ -168,7 +198,8 @@ public class LabReportServiceImpl implements LabReportService {
                             labReport.getType(),
                             labReport.getTimestamp(),
                             labReport.getFile(),
-                            labReport.getPatient().getId()
+                            labReport.getPatient().getId(),
+                            labReport.getHospital().getId()
                     )).collect(Collectors.toList());
 
             if (!dtos.isEmpty()) {

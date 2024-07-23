@@ -31,6 +31,7 @@ public class HospitalController {
     // Find hospital by id
     @GetMapping("/hospital/{id}")
     public ResponseEntity<HospitalDTO> getHospitalById(@PathVariable Long id) {
+        System.out.println(id);
         HospitalDTO dto = hospitalService.getHospitalById(id);
 
         if (dto != null) {

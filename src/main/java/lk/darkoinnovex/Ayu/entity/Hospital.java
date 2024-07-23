@@ -34,6 +34,9 @@ public class Hospital {
     @Column(nullable = false)
     private String password;
 
+    @Column(unique = true)
+    private String url;
+
     @Column(nullable = false)
     private String status = "Connected";
 
@@ -51,4 +54,7 @@ public class Hospital {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "hospital")
     private List<Notification> notifications;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "hospital")
+    private List<LabReport> labReports;
 }
