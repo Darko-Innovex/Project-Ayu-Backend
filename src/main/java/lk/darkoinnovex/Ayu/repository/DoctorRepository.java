@@ -28,6 +28,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     Optional<List<Doctor>> findDoctorsByHospitalAndSpeciality(
             @Param("hospitalId") Long hospitalId, @Param("speciality") String speciality);
 
-    @Query("SELECT dl.doctor FROM DoctorList dl WHERE dl.hospital.id = : hospitalId")
+    @Query("SELECT dl.doctor FROM DoctorList dl WHERE dl.hospital.id = :hospitalId")
     Page<Doctor> getDoctorListOfHospital(@Param("hospitalId") Long hospitalId, Pageable pageable);
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -285,5 +286,19 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
 
         return null;
+    }
+
+    @Override
+    public List<Integer> getAppointmentCountOfHospital(Long hospitalId) {
+        List<Integer> appointmentsCounts = new ArrayList<>();
+
+        int year = LocalDate.now().getYear();
+
+        for (int month = 1; month <= 12; month++) {
+            Integer count = appointmentRepository.monthlyAppointFromHospital(hospitalId, year, month);
+            appointmentsCounts.add(count);
+        }
+
+        return appointmentsCounts;
     }
 }
