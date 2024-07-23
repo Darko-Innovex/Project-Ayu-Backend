@@ -19,4 +19,5 @@ public interface DoctorService {
     List<DoctorDTO> getDoctorListOfHospital(Long hospitalId, Integer page, Integer count);
     DoctorDTO removeDoctorFromHospital(Long dId, Long hId);
     DoctorDTO addDoctorToHospital(Long dId, Long hId);
+    Integer getDoctorCountOfHospital(Long id);
 }

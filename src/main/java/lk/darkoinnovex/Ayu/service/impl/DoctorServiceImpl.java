@@ -211,4 +211,9 @@ public class DoctorServiceImpl implements DoctorService {
 
         return null;
     }
+
+    @Override
+    public Integer getDoctorCountOfHospital(Long id) {
+        return doctorListRepository.getDoctorCountOfHospital(id);
+    }
 }

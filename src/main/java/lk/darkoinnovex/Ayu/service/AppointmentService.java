@@ -20,4 +20,5 @@ public interface AppointmentService {
     List<AppointmentDTO> getAppointmentOfHospital(Long id, Integer page, Integer count);
     Integer getCompletedAppointmentCountOfHospital(Long id);
     Integer getPendingAppointmentCountOfHospital(Long id);
+    List<Integer> getAppointmentCountOfHospital(Long id);
 }

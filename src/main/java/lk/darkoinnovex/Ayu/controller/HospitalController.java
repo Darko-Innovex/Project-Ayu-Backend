@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lk.darkoinnovex.Ayu.dto.HospitalDTO;
 import lk.darkoinnovex.Ayu.service.AppointmentService;
+import lk.darkoinnovex.Ayu.service.DoctorService;
 import lk.darkoinnovex.Ayu.service.HospitalService;
 import lk.darkoinnovex.Ayu.service.LabReportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class HospitalController {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private DoctorService doctorService;
 
     // Find hospital by id
     @GetMapping("/hospital/{id}")
@@ -88,5 +92,25 @@ public class HospitalController {
         json.put("pendingAppointment", pendingAppointment);
 
         return ResponseEntity.status(HttpStatus.OK).body(json);
+    }
+
+    @GetMapping("/hospital/dashboard_data/{id}/doctor")
+    public ResponseEntity<ObjectNode> getDoctorCountOfHospital(@PathVariable Long id) {
+        Integer doctorCount = doctorService.getDoctorCountOfHospital(id);
+        ObjectNode json = objectMapper.createObjectNode();
+        json.put("doctorCount", doctorCount);
+        return ResponseEntity.status(HttpStatus.OK).body(json);
+    }
+
+    @GetMapping("/hospital/dashboard_data/{id}/appointmet")
+    public ResponseEntity<List<Integer>> getAppointmentCountOfHospital(@PathVariable Long id) {
+        List<Integer> appointmentCount = appointmentService.getAppointmentCountOfHospital(id);
+
+        if (appointmentCount != null){
+            return ResponseEntity.status(HttpStatus.OK).body(appointmentCount);
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 }

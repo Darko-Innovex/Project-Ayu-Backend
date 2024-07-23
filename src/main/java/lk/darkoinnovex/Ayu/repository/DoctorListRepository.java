@@ -13,4 +13,7 @@ public interface DoctorListRepository extends JpaRepository<DoctorList, Long> {
 
     @Query("SELECT dl FROM DoctorList dl WHERE dl.doctor.id = :dId AND dl.hospital.id = :hId")
     Optional<DoctorList> selectByDoctorIdAndHospitalId(@Param("dId") Long dId, @Param("hId") Long hId);
+
+    @Query("SELECT COUNT(d) FROM DoctorList d WHERE d.hospital.id = :id")
+    Integer getDoctorCountOfHospital(@Param("id") Long id);
 }
