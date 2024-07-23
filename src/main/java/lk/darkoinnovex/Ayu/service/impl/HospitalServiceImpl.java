@@ -29,6 +29,7 @@ public class HospitalServiceImpl implements HospitalService {
             hospitalDTO.setEmail(hospital.getEmail());
             hospitalDTO.setMobile(hospital.getMobile());
             hospitalDTO.setStatus(hospital.getStatus());
+            hospitalDTO.setUrl(hospital.getUrl());
 
             return hospitalDTO;
         }
@@ -49,6 +50,7 @@ public class HospitalServiceImpl implements HospitalService {
             hospitalDTO.setEmail(hospital.getEmail());
             hospitalDTO.setMobile(hospital.getMobile());
             hospitalDTO.setStatus(hospital.getStatus());
+            hospitalDTO.setUrl(hospital.getUrl());
 
             return hospitalDTO;
         }
@@ -78,7 +80,8 @@ public class HospitalServiceImpl implements HospitalService {
                             hospital.getEmail(),
                             hospital.getMobile(),
                             hospital.getLocation(),
-                            hospital.getStatus()
+                            hospital.getStatus(),
+                            hospital.getUrl()
                     )
             ).toList();
         }

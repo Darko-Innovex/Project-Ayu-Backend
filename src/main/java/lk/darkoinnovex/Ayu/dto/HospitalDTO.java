@@ -16,4 +16,5 @@ public class HospitalDTO {
     private int mobile;
     private String location;
     private String status ;
+    private String url;
 }
