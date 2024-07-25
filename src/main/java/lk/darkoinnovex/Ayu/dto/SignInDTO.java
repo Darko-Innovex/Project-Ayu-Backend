@@ -17,4 +17,5 @@ public class SignInDTO {
     private String type;
     private String username;
     private String password;
+    private String token;
 }

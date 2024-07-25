@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,9 @@ public class PatientServiceImpl implements PatientService {
 
     @Autowired
     private HealthCardRepository healthCardRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<PatientDTO> getAllPatients() {
@@ -65,18 +69,20 @@ public class PatientServiceImpl implements PatientService {
         Patient patient = patientDTO.toEntity();
         patient.setHospital(hospital);
         patient.setHealthCard(healthCard);
+        patient.setPassword(passwordEncoder.encode(patientDTO.getPassword()));
 
         Patient savedPatient = patientRepository.save(patient);
 
-        if (savedPatient != null) {
+        if (savedPatient != null && healthCard != null) {
 
             healthCard.setStatus("Connected");
 
             HealthCard save = healthCardRepository.save(healthCard);
 
-            if (save != null) {
-                return savedPatient.toDto();
-            }
+        }
+
+        if (savedPatient != null) {
+            return savedPatient.toDto();
         }
 
         return null;
