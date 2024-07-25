@@ -46,4 +46,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     @Query("SELECT COUNT(a) FROM Appointment a WHERE a.hospital.id = :hospitalId AND YEAR(a.timestamp) = :year AND MONTH(a.timestamp) = :month AND a.status = 'COMPLETED'")
     Integer monthlyAppointFromHospital(@Param("hospitalId") Long hospitalId, @Param("year") Integer year, @Param("month") Integer month);
+
+    @Query("SELECT a FROM Appointment a WHERE a.patient.id = :patientId AND a.schedule.id = :scheduleId")
+    Optional<Appointment> getAppointmentOfPatientBySchedule(@Param("patientId") Long patientId, @Param("scheduleId") Long scheduleId);
 }

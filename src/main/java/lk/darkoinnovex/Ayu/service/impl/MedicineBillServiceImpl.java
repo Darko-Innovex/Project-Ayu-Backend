@@ -2,10 +2,7 @@ package lk.darkoinnovex.Ayu.service.impl;
 
 import lk.darkoinnovex.Ayu.dto.MedicineBillDTO;
 import lk.darkoinnovex.Ayu.dto.MedicineDTO;
-import lk.darkoinnovex.Ayu.entity.Doctor;
-import lk.darkoinnovex.Ayu.entity.MedicineBill;
-import lk.darkoinnovex.Ayu.entity.Medicine;
-import lk.darkoinnovex.Ayu.entity.Patient;
+import lk.darkoinnovex.Ayu.entity.*;
 import lk.darkoinnovex.Ayu.repository.*;
 import lk.darkoinnovex.Ayu.service.MedicineBillService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,24 +33,30 @@ public class MedicineBillServiceImpl implements MedicineBillService {
     @Autowired
     private MedicineRepository medicineRepository;
 
-    @Override
+    @Autowired
+    private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private ScheduleRepository scheduleRepository;
+
     @Transactional
-    public MedicineBillDTO saveMedicineBill(MedicineBillDTO medicineBillDTO) {
+    @Override
+    public MedicineBillDTO saveMedicineBill(MedicineBillDTO dto) {
 
-        Doctor doctor = doctorRepository.findById(medicineBillDTO.getDoctorId()).orElse(null);
+        Appointment appointment = appointmentRepository.getAppointmentOfPatientBySchedule(dto.getPatientId(), dto.getScheduleId()).orElse(null);
+        Schedule schedule = scheduleRepository.findById(dto.getScheduleId()).orElse(null);
 
-        if (doctor != null) {
+        if (appointment != null && schedule != null) {
 
             MedicineBill medicineBill = new MedicineBill();
-
-            medicineBill.setTimestamp(medicineBillDTO.getTimestamp());
-            medicineBill.setDoctor(doctor);
+            medicineBill.setAppointment(appointment);
+            medicineBill.setDoctor(schedule.getDoctor());
 
             MedicineBill save = medicineBillRepository.save(medicineBill);
 
             if (save != null) {
 
-                List<Medicine> medicines = medicineBillDTO.getMedicineList().stream()
+                List<Medicine> medicines = dto.getMedicineList().stream()
                         .map(medicineDTO -> {
                             Medicine medicine = medicineDTO.toEntity();
                             medicine.setMedicineBill(save);
@@ -72,8 +75,8 @@ public class MedicineBillServiceImpl implements MedicineBillService {
                 }
 
                 if (allSaved) {
-                    medicineBillDTO.setId(save.getId());
-                    return medicineBillDTO;
+                    dto.setId(save.getId());
+                    return dto;
                 }
             }
         }
@@ -89,7 +92,6 @@ public class MedicineBillServiceImpl implements MedicineBillService {
         Doctor doctor = doctorRepository.findById(medicineBillDTO.getDoctorId()).orElse(null);
 
         if (medicineBill != null) {
-            medicineBill.setTimestamp(medicineBillDTO.getTimestamp());
             medicineBill.setDoctor(doctor);
 
             MedicineBill save = medicineBillRepository.save(medicineBill);
@@ -109,13 +111,13 @@ public class MedicineBillServiceImpl implements MedicineBillService {
 
         if (medicineBill != null) {
 
-
             return new MedicineBillDTO(
                     medicineBill.getId(),
                     medicineBill.getTimestamp(),
                     medicineBill.getDoctor().getId(),
                     medicineBill.getAppointment().getId(),
-                    getMedicineAsAList(medicineBill.getMedicine()));
+                    getMedicineAsAList(medicineBill.getMedicine())
+            );
         }
         return null;
     }
