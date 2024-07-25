@@ -53,8 +53,6 @@ public class LabReportController {
     @PostMapping("/lab_report")
     public ResponseEntity<LabReportDTO> createLabReport(@RequestBody LabReportDTO labReportDTO) {
 
-
-
         labReportDTO = labReportService.createLabReport(labReportDTO);
 
         if (labReportDTO != null) {

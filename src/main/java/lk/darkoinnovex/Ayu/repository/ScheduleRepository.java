@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
@@ -16,4 +19,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     @Query("SELECT s FROM Schedule s WHERE s.hospital.id = :hospitalId ORDER BY s.id DESC")
     Page<Schedule> getScheduleOfHospital(@Param("hospitalId") Long hospitalId, Pageable pageable);
+
+    @Query("SELECT s FROM Schedule s WHERE s.doctor.id = :doctorId AND s.date = CURRENT_DATE")
+    Optional<List<Schedule>> findByHospitalAndDoctorOnCurrentDate(@Param("doctorId") Long doctorId);
 }

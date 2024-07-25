@@ -65,4 +65,15 @@ public class ScheduleController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @GetMapping("/doctor/{dId}/schedule")
+    public ResponseEntity<List<ScheduleDTO>> getScheduleOfDoctorOnHospital(@PathVariable("dId") Long dId) {
+        List<ScheduleDTO> list = scheduleService.findByHospitalAndDoctorOnCurrentDate(dId);
+
+        if (list != null) {
+            return ResponseEntity.ok().body(list);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 }
