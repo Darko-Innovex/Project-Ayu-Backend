@@ -14,4 +14,5 @@ public interface ScheduleService {
     List<ScheduleDTO> getScheduleOfDoctorOnHospital(Long doctorId, Long hospitalId, Integer page, Integer count);
     List<ScheduleDTO> getScheduleOfHospital(Long hospitalId, Integer page, Integer count);
     ScheduleDTO updateScheduleStatus(Long scheduleId);
+    List<ScheduleDTO> findByHospitalAndDoctorOnCurrentDate(Long doctorId);
 }

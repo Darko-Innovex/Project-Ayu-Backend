@@ -170,4 +170,23 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         return null;
     }
+
+    @Override
+    public List<ScheduleDTO> findByHospitalAndDoctorOnCurrentDate(Long doctorId) {
+        List<Schedule> schedules = scheduleRepository.findByHospitalAndDoctorOnCurrentDate(doctorId).orElse(null);
+
+        if (schedules != null) {
+            return schedules.stream().map(schedule -> new ScheduleDTO(
+                    schedule.getId(),
+                    schedule.getDate(),
+                    schedule.getInTime(),
+                    schedule.getOutTime(),
+                    schedule.getStatus(),
+                    schedule.getHospital().getId(),
+                    schedule.getDoctor().getId()
+            )).toList();
+        }
+
+        return null;
+    }
 }
