@@ -18,4 +18,14 @@ public class MedicineBillDTO {
     private Long doctorId;
     private Long appointmentId;
     private List<MedicineDTO> medicineList;
+    private Long scheduleId;
+    private Long patientId;
+
+    public MedicineBillDTO(Long id, Timestamp timestamp, Long doctorId, Long appointmentId, List<MedicineDTO> medicineList) {
+        this.id = id;
+        this.timestamp = timestamp;
+        this.doctorId = doctorId;
+        this.appointmentId = appointmentId;
+        this.medicineList = medicineList;
+    }
 }
