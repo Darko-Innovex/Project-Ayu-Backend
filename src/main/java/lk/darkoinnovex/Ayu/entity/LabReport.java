@@ -28,8 +28,8 @@ public class LabReport {
     private Timestamp timestamp;
 
     @Lob
-    @Column(columnDefinition = "LONGTEXT")
-    private String file;
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] file;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Patient patient;

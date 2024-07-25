@@ -8,12 +8,14 @@ import lk.darkoinnovex.Ayu.repository.HospitalRepository;
 import lk.darkoinnovex.Ayu.repository.LabReportRepository;
 import lk.darkoinnovex.Ayu.repository.PatientRepository;
 import lk.darkoinnovex.Ayu.service.LabReportService;
+import lk.darkoinnovex.Ayu.util.PdfFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -39,7 +41,7 @@ public class LabReportServiceImpl implements LabReportService {
                 labReport.getId(),
                 labReport.getType(),
                 labReport.getTimestamp(),
-                labReport.getFile(),
+                new PdfFile(labReport.getFile()),
                 labReport.getPatient().getId(),
                 labReport.getHospital().getId())).toList();
     }
@@ -50,20 +52,25 @@ public class LabReportServiceImpl implements LabReportService {
         Hospital hospital = hospitalRepository.findById(dto.getHospitalId()).orElse(null);
 
         if (patient != null && hospital != null) {
-            LabReport labReport = new LabReport();
-            labReport.setType(dto.getType());
-            labReport.setFile(dto.getFile());
-            labReport.setPatient(patient);
-            labReport.setHospital(hospital);
+            try {
+                LabReport labReport = new LabReport();
+                labReport.setType(dto.getType());
+                labReport.setFile(dto.getFile().getBytes());
+                labReport.setPatient(patient);
+                labReport.setHospital(hospital);
 
-            LabReport savedLabReport = labReportRepository.save(labReport);
-            return new LabReportDTO(
-                    savedLabReport.getId(),
-                    savedLabReport.getType(),
-                    savedLabReport.getTimestamp(),
-                    savedLabReport.getFile(),
-                    savedLabReport.getPatient().getId(),
-                    savedLabReport.getHospital().getId());
+                LabReport savedLabReport = labReportRepository.save(labReport);
+                return new LabReportDTO(
+                        savedLabReport.getId(),
+                        savedLabReport.getType(),
+                        savedLabReport.getTimestamp(),
+                        new PdfFile(labReport.getFile()),
+                        savedLabReport.getPatient().getId(),
+                        savedLabReport.getHospital().getId()
+                );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
@@ -74,21 +81,26 @@ public class LabReportServiceImpl implements LabReportService {
         Hospital hospital = hospitalRepository.findById(dto.getHospitalId()).orElse(null);
 
         if (patient != null && hospital != null) {
-            LabReport labReport = new LabReport();
-            labReport.setType(dto.getType());
-            labReport.setTimestamp(dto.getTimestamp());
-            labReport.setFile(dto.getFile());
-            labReport.setPatient(patient);
-            labReport.setHospital(hospital);
+            try {
+                LabReport labReport = new LabReport();
+                labReport.setType(dto.getType());
+                labReport.setTimestamp(dto.getTimestamp());
+                labReport.setFile(dto.getFile().getBytes());
+                labReport.setPatient(patient);
+                labReport.setHospital(hospital);
 
-            LabReport savedLabReport = labReportRepository.save(labReport);
-            return new LabReportDTO(
-                    savedLabReport.getId(),
-                    savedLabReport.getType(),
-                    savedLabReport.getTimestamp(),
-                    savedLabReport.getFile(),
-                    savedLabReport.getPatient().getId(),
-                    savedLabReport.getHospital().getId());
+                LabReport savedLabReport = labReportRepository.save(labReport);
+                return new LabReportDTO(
+                        savedLabReport.getId(),
+                        savedLabReport.getType(),
+                        savedLabReport.getTimestamp(),
+                        new PdfFile(labReport.getFile()),
+                        savedLabReport.getPatient().getId(),
+                        savedLabReport.getHospital().getId()
+                );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
@@ -101,7 +113,7 @@ public class LabReportServiceImpl implements LabReportService {
                     labReport.getId(),
                     labReport.getType(),
                     labReport.getTimestamp(),
-                    labReport.getFile(),
+                    new PdfFile(labReport.getFile()),
                     labReport.getPatient().getId(),
                     labReport.getHospital().getId());
         }
@@ -124,7 +136,7 @@ public class LabReportServiceImpl implements LabReportService {
                             labReport.getId(),
                             labReport.getType(),
                             labReport.getTimestamp(),
-                            labReport.getFile(),
+                            new PdfFile(labReport.getFile()),
                             labReport.getPatient().getId(),
                             labReport.getHospital().getId()
                     )
@@ -168,7 +180,7 @@ public class LabReportServiceImpl implements LabReportService {
                             labReport.getId(),
                             labReport.getType(),
                             labReport.getTimestamp(),
-                            labReport.getFile(),
+                            new PdfFile(labReport.getFile()),
                             labReport.getPatient().getId(),
                             labReport.getHospital().getId()
                     )).collect(Collectors.toList());
@@ -197,7 +209,7 @@ public class LabReportServiceImpl implements LabReportService {
                             labReport.getId(),
                             labReport.getType(),
                             labReport.getTimestamp(),
-                            labReport.getFile(),
+                            new PdfFile(labReport.getFile()),
                             labReport.getPatient().getId(),
                             labReport.getHospital().getId()
                     )).collect(Collectors.toList());
