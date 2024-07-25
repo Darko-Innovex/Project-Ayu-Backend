@@ -15,7 +15,7 @@ public interface PatientService {
     PatientDTO updatePatient(PatientDTO PatientDTO);
     PatientDTO getPatientById(Long id);
     List<OldPatientDTO> getAllPatientByDoctorID(Long id);
-    PatientDTO getPatientByHealthCard(Long pin);
+    PatientDTO getPatientByHealthCard(Long pin, short password);
     PatientDTO configPatientSignIn(SignInDTO dto);
     List<PatientDTO> getPatientSavedByHospital(Long id, Integer page, Integer count);
     PatientDTO getPatientByNic(String nic);

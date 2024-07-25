@@ -70,12 +70,13 @@ public class PatientController {
 
     //getPatientByHealthCardID
     @GetMapping("/card/{pin}/patient")
-    public ResponseEntity<Object> getPatientByHealthCardID(@PathVariable Long pin) {
+    public ResponseEntity<Long> getPatientByHealthCardID(
+            @PathVariable Long pin, @RequestParam("password") String password) {
 
-        PatientDTO patientDTO = patientService.getPatientByHealthCard(pin);
+        PatientDTO patientDTO = patientService.getPatientByHealthCard(pin, Short.parseShort(password));
 
         if (patientDTO != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(patientDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(patientDTO.getId());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
