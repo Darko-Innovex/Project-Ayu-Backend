@@ -15,7 +15,7 @@ public interface LabReportService {
 
     LabReportDTO updateLabReport(LabReportDTO dto);
 
-    LabReportDTO getLabReportById(Long id);
+    byte[] getLabReportFileById(Long id);
 
     List<LabReportDTO> getReportsByPatientId(Long id, Integer page, Integer count);
 
