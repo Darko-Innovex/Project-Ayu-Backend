@@ -100,18 +100,10 @@ public class LabReportServiceImpl implements LabReportService {
     }
 
     @Override
-    public LabReportDTO getLabReportById(Long id) {
+    public byte[] getLabReportFileById(Long id) {
         LabReport labReport = labReportRepository.findById(id).orElse(null);
         if (labReport != null) {
-            return new LabReportDTO(
-                    labReport.getId(),
-                    labReport.getType(),
-                    labReport.getTimestamp(),
-                    new PdfFile(labReport.getFile()),
-                    labReport.getPatient().getId(),
-                    labReport.getHospital().getId(),
-                    labReport.getStatus()
-            );
+            return labReport.getFile();
         }
         return null;
     }
@@ -128,16 +120,15 @@ public class LabReportServiceImpl implements LabReportService {
             Page<LabReport> reports = labReportRepository.findByPatientId(patient, pageable);
 
             List<LabReportDTO> list = reports.getContent().stream().
-                    map(labReport -> new LabReportDTO(
-                                    labReport.getId(),
-                                    labReport.getType(),
-                                    labReport.getTimestamp(),
-                                    new PdfFile(labReport.getFile()),
-                                    labReport.getPatient().getId(),
-                                    labReport.getHospital().getId(),
-                            labReport.getStatus()
-                            )
-                    ).toList();
+                    map(labReport -> {
+                        LabReportDTO labReportDTO = new LabReportDTO();
+                        labReportDTO.setId(labReport.getId());
+                        labReportDTO.setType(labReport.getType());
+                        labReportDTO.setTimestamp(labReport.getTimestamp());
+                        labReportDTO.setPatientId(labReport.getPatient().getId());
+                        labReportDTO.setHospitalId(labReport.getHospital().getId());
+                        return labReportDTO;
+                    }).toList();
 
             if (!list.isEmpty()) {
                 return list;

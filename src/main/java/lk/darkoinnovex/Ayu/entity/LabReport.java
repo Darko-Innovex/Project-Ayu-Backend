@@ -25,7 +25,6 @@ public class LabReport {
     private String type;
 
     @CreationTimestamp
-    @UpdateTimestamp
     @Column(nullable = false)
     private Timestamp timestamp;
 

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lk.darkoinnovex.Ayu.dto.LabReportDTO;
 import lk.darkoinnovex.Ayu.service.LabReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,12 +40,17 @@ public class LabReportController {
 
     // Find lab report by id
     @GetMapping("/lab_reports/{id}") 
-    public ResponseEntity<LabReportDTO> getLabReportById(@PathVariable Long id) {
+    public ResponseEntity<?> getLabReportById(@PathVariable Long id) {
 
-        LabReportDTO dto = labReportService.getLabReportById(id);
+        byte[] pdfBytes = labReportService.getLabReportFileById(id);
 
-        if (dto != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(dto);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(org.springframework.http.MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "report.pdf");
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+        if (pdfBytes != null) {
+            return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
