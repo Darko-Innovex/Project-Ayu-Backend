@@ -77,27 +77,17 @@ public class LabReportServiceImpl implements LabReportService {
 
     @Override
     public LabReportDTO updateLabReport(LabReportDTO dto) {
-        Patient patient = patientRepository.findById(dto.getPatientId()).orElse(null);
-        Hospital hospital = hospitalRepository.findById(dto.getHospitalId()).orElse(null);
+        LabReport report = labReportRepository.findById(dto.getId()).orElse(null);
 
-        if (patient != null && hospital != null) {
+        if (report != null) {
             try {
-                LabReport labReport = new LabReport();
-                labReport.setType(dto.getType());
-                labReport.setTimestamp(dto.getTimestamp());
-                labReport.setFile(dto.getFile().getBytes());
-                labReport.setPatient(patient);
-                labReport.setHospital(hospital);
+                report.setFile(dto.getFile().getBytes());
 
-                LabReport savedLabReport = labReportRepository.save(labReport);
-                return new LabReportDTO(
-                        savedLabReport.getId(),
-                        savedLabReport.getType(),
-                        savedLabReport.getTimestamp(),
-                        new PdfFile(labReport.getFile()),
-                        savedLabReport.getPatient().getId(),
-                        savedLabReport.getHospital().getId()
-                );
+                LabReport savedLabReport = labReportRepository.save(report);
+
+                if (savedLabReport != null) {
+                    return new LabReportDTO();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
