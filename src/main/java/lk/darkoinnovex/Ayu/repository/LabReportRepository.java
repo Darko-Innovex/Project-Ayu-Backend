@@ -27,6 +27,9 @@ public interface LabReportRepository extends JpaRepository<LabReport, Long> {
             @Param("endDate") Timestamp endDate,
             Pageable pageable);
 
+    @Query("select l from LabReport l WHERE l.hospital.id=:hospitalId")
+    Page<LabReport> findByHospitalId(@Param("hospitalId") Long hospitalId, Pageable pageable);
+
 //    @Query("SELECT COUNT(l) FROM LabReport l WHERE l.hospital.id=:hospitalId")
 //    Optional<Integer> countLabReportsOfHospital(@Param("hospitalId") Long hId);
 }

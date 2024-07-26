@@ -80,6 +80,22 @@ public class LabReportController {
         }
     }
 
+    // Return all lab reports of a specific patient
+    @GetMapping("/hospital/{id}/lab_reports")
+    public ResponseEntity<List<LabReportDTO>> getAllLabReportsOfHospital(
+            @RequestParam("page") Integer page,
+            @RequestParam("count") Integer count,
+            @PathVariable Long id) {
+
+        List<LabReportDTO> dtos = labReportService.getReportsByHospitalId(id, page, count);
+
+        if (dtos != null) {
+            return  ResponseEntity.status(HttpStatus.OK).body(dtos);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
     /*
     // Return all lab reports of a specific patient on a specific date
     @GetMapping("/patient/{id}/lab_reports/date") 

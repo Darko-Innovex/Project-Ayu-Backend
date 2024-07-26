@@ -43,12 +43,14 @@ public class LabReportServiceImpl implements LabReportService {
                 labReport.getTimestamp(),
                 new PdfFile(labReport.getFile()),
                 labReport.getPatient().getId(),
-                labReport.getHospital().getId())).toList();
+                labReport.getHospital().getId(),
+                labReport.getStatus()
+        )).toList();
     }
 
     @Override
     public LabReportDTO createLabReport(LabReportDTO dto) {
-        Patient patient =patientRepository.findById(dto.getPatientId()).orElse(null);
+        Patient patient = patientRepository.findById(dto.getPatientId()).orElse(null);
         Hospital hospital = hospitalRepository.findById(dto.getHospitalId()).orElse(null);
 
         if (patient != null && hospital != null) {
@@ -66,7 +68,8 @@ public class LabReportServiceImpl implements LabReportService {
                         savedLabReport.getTimestamp(),
                         new PdfFile(labReport.getFile()),
                         savedLabReport.getPatient().getId(),
-                        savedLabReport.getHospital().getId()
+                        savedLabReport.getHospital().getId(),
+                        labReport.getStatus()
                 );
             } catch (IOException e) {
                 e.printStackTrace();
@@ -82,6 +85,7 @@ public class LabReportServiceImpl implements LabReportService {
         if (report != null) {
             try {
                 report.setFile(dto.getFile().getBytes());
+                report.setStatus("Completed");
 
                 LabReport savedLabReport = labReportRepository.save(report);
 
@@ -105,7 +109,9 @@ public class LabReportServiceImpl implements LabReportService {
                     labReport.getTimestamp(),
                     new PdfFile(labReport.getFile()),
                     labReport.getPatient().getId(),
-                    labReport.getHospital().getId());
+                    labReport.getHospital().getId(),
+                    labReport.getStatus()
+            );
         }
         return null;
     }
@@ -123,14 +129,15 @@ public class LabReportServiceImpl implements LabReportService {
 
             List<LabReportDTO> list = reports.getContent().stream().
                     map(labReport -> new LabReportDTO(
-                            labReport.getId(),
-                            labReport.getType(),
-                            labReport.getTimestamp(),
-                            new PdfFile(labReport.getFile()),
-                            labReport.getPatient().getId(),
-                            labReport.getHospital().getId()
-                    )
-            ).toList();
+                                    labReport.getId(),
+                                    labReport.getType(),
+                                    labReport.getTimestamp(),
+                                    new PdfFile(labReport.getFile()),
+                                    labReport.getPatient().getId(),
+                                    labReport.getHospital().getId(),
+                            labReport.getStatus()
+                            )
+                    ).toList();
 
             if (!list.isEmpty()) {
                 return list;
@@ -155,7 +162,7 @@ public class LabReportServiceImpl implements LabReportService {
     public List<LabReportDTO> getAllLabReportsOfPatientOnDate(Long pId, LocalDate date, Integer page, Integer count) {
         Patient patient = patientRepository.findById(pId).orElse(null);
 
-        if(patient != null) {
+        if (patient != null) {
 
             Pageable pageable = PageRequest.of(page, count);
 
@@ -172,7 +179,8 @@ public class LabReportServiceImpl implements LabReportService {
                             labReport.getTimestamp(),
                             new PdfFile(labReport.getFile()),
                             labReport.getPatient().getId(),
-                            labReport.getHospital().getId()
+                            labReport.getHospital().getId(),
+                            labReport.getStatus()
                     )).collect(Collectors.toList());
 
             if (!dtos.isEmpty()) {
@@ -186,7 +194,7 @@ public class LabReportServiceImpl implements LabReportService {
     public List<LabReportDTO> findLabReportsByPatientIdAndDateRange(Long pId, LocalDate startDate, LocalDate endDate, Integer page, Integer count) {
         Patient patient = patientRepository.findById(pId).orElse(null);
 
-        if(patient != null) {
+        if (patient != null) {
 
             Pageable pageable = PageRequest.of(page, count);
 
@@ -201,12 +209,38 @@ public class LabReportServiceImpl implements LabReportService {
                             labReport.getTimestamp(),
                             new PdfFile(labReport.getFile()),
                             labReport.getPatient().getId(),
-                            labReport.getHospital().getId()
+                            labReport.getHospital().getId(),
+                            labReport.getStatus()
                     )).collect(Collectors.toList());
 
             if (!dtos.isEmpty()) {
                 return dtos;
             }
+        }
+        return null;
+    }
+
+    @Override
+    public List<LabReportDTO> getReportsByHospitalId(Long id, Integer page, Integer count) {
+
+        Pageable pageable = PageRequest.of(page, count);
+
+        Page<LabReport> reports = labReportRepository.findByHospitalId(id, pageable);
+
+        List<LabReportDTO> list = reports.getContent().stream().
+                map(labReport -> new LabReportDTO(
+                                labReport.getId(),
+                                labReport.getType(),
+                                labReport.getTimestamp(),
+                                new PdfFile(labReport.getFile()),
+                                labReport.getPatient().getId(),
+                                labReport.getHospital().getId(),
+                                labReport.getStatus()
+                        )
+                ).toList();
+
+        if (!list.isEmpty()) {
+            return list;
         }
         return null;
     }

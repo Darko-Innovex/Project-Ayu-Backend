@@ -16,14 +16,16 @@ public class LabReportDTO {
     private MultipartFile file;
     private Long patientId;
     private Long hospitalId;
+    private String status;
     private String reportType = "pdf";
 
-    public LabReportDTO(Long id, String type, Timestamp timestamp, MultipartFile file, Long patientId, Long hospitalId) {
+    public LabReportDTO(Long id, String type, Timestamp timestamp, MultipartFile file, Long patientId, Long hospitalId, String status) {
         this.id = id;
         this.type = type;
         this.timestamp = timestamp;
         this.file = file;
         this.patientId = patientId;
         this.hospitalId = hospitalId;
+        this.status = status;
     }
 }
