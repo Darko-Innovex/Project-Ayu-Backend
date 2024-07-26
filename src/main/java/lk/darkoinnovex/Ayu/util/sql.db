@@ -1,0 +1,18 @@
+INSERT INTO hospital (mobile, email, location, name, password, status, url)
+VALUES
+(0723412349, 'apeksha@gmail.com', '123 Main St', 'Apeksha Hospital', '123456', 'Connected', 'http://www.apeksha.com'),
+(0712345678, 'hemas@gmail.com', '456 Elm St', 'Hemas Hospital', '123456', 'Connected', 'http://www.hemas.com'),
+(0709876543, 'ruhunu@gmail.com', '789 Oak St', 'Ruhunu Hospital', '123456', 'Connected', 'http://www.ruhunu.com');
+
+INSERT INTO health_card (password, pin_no, status)
+VALUES
+(0045685456895648, 123456789012345, 'Pending'),
+(5678435445343454, 987654321098765, 'Pending'),
+(3454345236756888, 456789123456789, 'Pending');
+
+INSERT INTO patient (dob, mobile, health_card_id, hospital_id, blood_type, email, name, nic, password, status)
+VALUES
+('2000-01-15', 0751232456, 1, 1, 'O+', 'ashen@example.com', 'Ashen Madhushanka', '233421456783', '123456', 'Connected'),
+('1992-05-22', 2345678901, 2, 2, 'A-', 'ashan@example.com', 'Ashan Naveen', '556732133412', '123456', 'Connected'),
+('1985-11-30', 3456789012, 3, 3, 'B+', 'gayanuka@example.com', 'Gayanuka BUlegoda', '200012341234', '123456', 'Connected');
+

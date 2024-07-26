@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @CrossOrigin("*")
@@ -61,6 +62,38 @@ public class LabReportController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
+    }
+
+    @PutMapping("/lab_report/{id}")
+    public ResponseEntity<String> updateLabReport(@RequestBody MultipartFile file, @PathVariable Long id) {
+
+        LabReportDTO labReportDTO = new LabReportDTO();
+        labReportDTO.setFile(file);
+        labReportDTO.setId(id);
+
+        labReportDTO = labReportService.updateLabReport(labReportDTO);
+
+        if (labReportDTO != null) {
+            return ResponseEntity.status(HttpStatus.OK).body("Lab report updated successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    // Return all lab reports of a specific patient
+    @GetMapping("/hospital/{id}/lab_reports")
+    public ResponseEntity<List<LabReportDTO>> getAllLabReportsOfHospital(
+            @RequestParam("page") Integer page,
+            @RequestParam("count") Integer count,
+            @PathVariable Long id) {
+
+        List<LabReportDTO> dtos = labReportService.getReportsByHospitalId(id, page, count);
+
+        if (dtos != null) {
+            return  ResponseEntity.status(HttpStatus.OK).body(dtos);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     /*

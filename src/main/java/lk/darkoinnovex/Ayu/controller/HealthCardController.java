@@ -16,7 +16,7 @@ public class HealthCardController {
     private HealthCardService healthCardService;
 
     @GetMapping("/health-card/config")
-    public ResponseEntity<PatientDTO> getHealthCardConfig(@RequestPart("pinNo") Long pinNo, @RequestPart("password") short password) {
+    public ResponseEntity<PatientDTO> getHealthCardConfig(@RequestParam("pinNo") Long pinNo, @RequestParam("password") short password) {
         PatientDTO patientDTO = healthCardService.findByPinAndPassword(pinNo, password);
 
         if (patientDTO != null) {

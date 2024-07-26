@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 
@@ -24,6 +25,7 @@ public class LabReport {
     private String type;
 
     @CreationTimestamp
+    @UpdateTimestamp
     @Column(nullable = false)
     private Timestamp timestamp;
 
@@ -36,4 +38,7 @@ public class LabReport {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Hospital hospital;
+
+    @Column(nullable = false)
+    private String status = "Pending";
 }
